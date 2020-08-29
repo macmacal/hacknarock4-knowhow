@@ -1,4 +1,6 @@
 import pickle
+from os import listdir
+from os.path import isfile, join
 
 
 class PassiveDataDAO:
@@ -9,6 +11,15 @@ class PassiveDataDAO:
         with open(self.path + '\\' + str(passive_data_id), 'rb') as f:
             passive_data = pickle.load(f)
         return passive_data
+
+    def get_passive_data(self):
+        datafiles = [f for f in listdir(self.path) if isfile(join(self.path, f))]
+
+        passive_data_list = []
+        for datafile in datafiles:
+            passive_data_list.append(self.get_passive_data_by_id(datafile))
+
+        return passive_data_list
 
     def save_passive_data(self, passive_data):
         with open(self.path + '\\' + str(passive_data.id), 'wb+') as f:
