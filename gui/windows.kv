@@ -1,0 +1,24 @@
+WindowManager:
+    MainWindow:
+    PassiveDataInspector:
+
+<MainWindow>:
+    name: "main"
+
+    GridLayout:
+        cols: 1
+        Label:
+            text: "KNOW-HOW"
+
+        Button:
+            text: "Passive Data Insepctor"
+            on_release:
+                app.root.current = "passive_data_inspector"
+
+<PassiveDataInspector>:
+    name: "passive_data_inspector"
+
+    Button:
+        text: "Back to Main Screen"
+        on_release:
+            app.root.current = "main"

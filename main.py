@@ -1,10 +1,10 @@
 from kivy.app import App
-from kivy.uix.label import Label
+import gui.windows
 
 
 class MyApp(App):
     def build(self):
-        return Label(text="WGWC 2/4")
+        return gui.windows.kivy_builder
 
 
 if __name__ == "__main__":
