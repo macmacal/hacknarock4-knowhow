@@ -24,6 +24,7 @@ WindowManager:
 
     db_preview: db_preview
     id_input: id_input
+    name_input: name_input
 
     GridLayout:
         cols: 1
@@ -39,7 +40,14 @@ WindowManager:
                 text: "Type ID to proceed: "
             TextInput:
                 id: id_input
-                text: "1"
+                text: ""
+                multiline: False
+
+            Label:
+                text: "Type name to proceed: "
+            TextInput:
+                id: name_input
+                text: ""
                 multiline: False
 
             Button:
