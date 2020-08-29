@@ -11,14 +11,77 @@ WindowManager:
             text: "KNOW-HOW"
 
         Button:
-            text: "Passive Data Insepctor"
+            text: "Passive Data Inspector"
             on_release:
                 app.root.current = "passive_data_inspector"
+                root.manager.transition.direction = "left"
 
 <PassiveDataInspector>:
     name: "passive_data_inspector"
 
-    Button:
-        text: "Back to Main Screen"
-        on_release:
-            app.root.current = "main"
+
+    GridLayout:
+        cols: 1
+
+        GridLayout:
+            cols: 2
+
+            Label:
+                text: "ID"
+            TextInput:
+                id: id
+                multiline: False
+
+            Label:
+                text: "Name"
+            TextInput:
+                id: name
+                multiline: False
+
+            Label:
+                text: "Producer"
+            TextInput:
+                id: producer
+                multiline: False
+
+            Label:
+                text: "Model"
+            TextInput:
+                id: model
+                multiline: False
+
+            Label:
+                text: "Serial number"
+            TextInput:
+                id: serial_number
+                multiline: False
+
+            Label:
+                text: "Activation date"
+            TextInput:
+                id: activation_date
+                multiline: False
+
+            Label:
+                text: "Purchase date"
+            TextInput:
+                id: purchase_date
+                multiline: False
+
+            Label:
+                text: "Ports"
+            TextInput:
+                id: ports
+                multiline: False
+
+            Label:
+                text: "Other"
+            TextInput:
+                id: other
+                multiline: False
+
+        Button:
+            text: "Back to Main Screen"
+            on_release:
+                app.root.current = "main"
+                root.manager.transition.direction = "right"
