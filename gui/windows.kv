@@ -1,0 +1,96 @@
+WindowManager:
+    MainWindow:
+    PassiveDataInspector:
+
+<MainWindow>:
+    name: "main"
+
+    GridLayout:
+        cols: 1
+        Label:
+            text: "KNOW-HOW"
+
+        Button:
+            text: "Passive Data Inspector"
+            on_release:
+                app.root.current = "passive_data_inspector"
+                root.manager.transition.direction = "left"
+
+<PassiveDataInspector>:
+    name: "passive_data_inspector"
+
+    item_id: item_id
+    namee: namee
+    producer: producer
+    model: model
+    serial_number: serial_number
+    activation_date: activation_date
+    purchase_date: purchase_date
+    ports: ports
+    other: other
+
+    GridLayout:
+        cols: 1
+
+        GridLayout:
+            cols: 2
+
+            Label:
+                text: "ID"
+            TextInput:
+                id: item_id
+                multiline: False
+
+            Label:
+                text: "Name"
+            TextInput:
+                id: namee
+                multiline: False
+
+            Label:
+                text: "Producer"
+            TextInput:
+                id: producer
+                multiline: False
+
+            Label:
+                text: "Model"
+            TextInput:
+                id: model
+                multiline: False
+
+            Label:
+                text: "Serial number"
+            TextInput:
+                id: serial_number
+                multiline: False
+
+            Label:
+                text: "Activation date"
+            TextInput:
+                id: activation_date
+                multiline: False
+
+            Label:
+                text: "Purchase date"
+            TextInput:
+                id: purchase_date
+                multiline: False
+
+            Label:
+                text: "Ports"
+            TextInput:
+                id: ports
+                multiline: False
+
+            Label:
+                text: "Other"
+            TextInput:
+                id: other
+                multiline: False
+
+        Button:
+            text: "Back to Main Screen"
+            on_release:
+                app.root.current = "main"
+                root.manager.transition.direction = "right"
