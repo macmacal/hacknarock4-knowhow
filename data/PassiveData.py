@@ -13,4 +13,4 @@ class PassiveData:
         self.acquire_date = acquire_date
         self.ports = {}
         self.other = {}
-
+        self.tutorials = []
