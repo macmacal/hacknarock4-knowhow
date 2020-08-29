@@ -8,7 +8,7 @@ class PassiveData:
     name: str
     producer: str = ''
     model: str = ''
-    serial_number: int = 0
+    serial_number: str = ''
     activation_date: datetime = datetime.now()
     acquire_date: datetime = datetime.now()
     ports = {}
