@@ -1,6 +1,7 @@
 import pickle
 from os import listdir, remove
 from os.path import isfile, join, exists
+import constants
 
 
 class PassiveDataDAO:
@@ -30,3 +31,6 @@ class PassiveDataDAO:
     def save_or_update_passive_data(self, passive_data):
         with open(self.path + '\\' + str(passive_data.id), 'wb+') as f:
             pickle.dump(passive_data, f)
+
+
+DataDAO = PassiveDataDAO(constants.DATABASE_PATH)

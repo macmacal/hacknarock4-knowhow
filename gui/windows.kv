@@ -4,7 +4,7 @@ WindowManager:
     PassiveDataInspector:
 
 <MainWindow>:
-    name: "main"
+    name: "main_window"
 
     GridLayout:
         cols: 1
@@ -36,7 +36,7 @@ WindowManager:
             cols: 2
 
             Label:
-                text: "Type ID to inspect: "
+                text: "Type ID to proceed: "
             TextInput:
                 id: id_input
                 text: "1"
@@ -45,14 +45,22 @@ WindowManager:
             Button:
                 text: "Back to main screen"
                 on_release:
-                    app.root.current = "main"
+                    app.root.current = "main_window"
                     root.manager.transition.direction = "right"
-            Button:
-                text: "Passive Data Inspector"
-                on_release:
-                    root.manager.get_screen('passive_data_inspector').item_id.text = id_input.text
-                    app.root.current = "passive_data_inspector"
-                    root.manager.transition.direction = "left"
+
+            GridLayout:
+                rows: 2
+
+                Button:
+                    text: "Data inspector"
+                    on_release:
+                        root.btn_inspect()
+                        root.manager.transition.direction = "left"
+                Button:
+                    text: "Create new"
+                    on_release:
+                        root.btn_create_new()
+                        root.manager.transition.direction = "left"
 
 <PassiveDataInspector>:
     name: "passive_data_inspector"
@@ -75,7 +83,7 @@ WindowManager:
 
             Label:
                 text: "ID"
-            TextInput:
+            Label:
                 id: item_id
                 multiline: False
 
@@ -136,8 +144,16 @@ WindowManager:
                     app.root.current = "database_list"
                     root.manager.transition.direction = "right"
 
-            Button:
-                text: "Save"
-                on_release:
-                    root.update_passive_data()
-                    root.popup_saved()
+            GridLayout:
+                cols: 1
+
+                Button:
+                    text: "Save"
+                    on_release:
+                        root.btn_save()
+
+                Button:
+                    text: "Delete"
+                    on_release:
+                        root.btn_delete()
+                        root.manager.transition.direction = "right"
