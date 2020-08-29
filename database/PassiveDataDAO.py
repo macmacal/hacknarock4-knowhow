@@ -1,6 +1,6 @@
 import pickle
 from os import listdir, remove
-from os.path import isfile, join
+from os.path import isfile, join, exists
 
 
 class PassiveDataDAO:
@@ -11,6 +11,9 @@ class PassiveDataDAO:
         with open(self.path + '\\' + str(passive_data_id), 'rb') as f:
             passive_data = pickle.load(f)
         return passive_data
+
+    def id_exists(self, passive_data_id):
+        return exists(self.path + '\\' + str(passive_data_id))
 
     def remove_passive_data_by_id(self, passive_data_id):
         remove(self.path + '\\' + str(passive_data_id))
