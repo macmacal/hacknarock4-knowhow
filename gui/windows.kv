@@ -4,7 +4,7 @@ WindowManager:
     PassiveDataInspector:
 
 <MainWindow>:
-    name: "main"
+    name: "main_window"
 
     GridLayout:
         cols: 1
@@ -45,13 +45,12 @@ WindowManager:
             Button:
                 text: "Back to main screen"
                 on_release:
-                    app.root.current = "main"
+                    app.root.current = "main_window"
                     root.manager.transition.direction = "right"
             Button:
                 text: "Passive Data Inspector"
                 on_release:
-                    root.manager.get_screen('passive_data_inspector').item_id.text = id_input.text
-                    app.root.current = "passive_data_inspector"
+                    root.btn_inspect()
                     root.manager.transition.direction = "left"
 
 <PassiveDataInspector>:
@@ -75,7 +74,7 @@ WindowManager:
 
             Label:
                 text: "ID"
-            TextInput:
+            Label:
                 id: item_id
                 multiline: False
 
