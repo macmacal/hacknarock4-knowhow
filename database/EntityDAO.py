@@ -1,7 +1,8 @@
 import pickle
 from os import listdir, remove
-from os.path import isfile, join, exists
+from os.path import isfile, join
 import constants
+import glob
 
 
 class EntityDAO:
@@ -9,15 +10,19 @@ class EntityDAO:
         self.path = path
 
     def get_data_by_id(self, passive_data_id):
-        with open(self.path + '\\' + str(passive_data_id), 'rb') as f:
+        paths = glob.glob(self.path + '\\' + str(passive_data_id) + '*')
+        with open(paths[0], 'rb') as f:
             passive_data = pickle.load(f)
         return passive_data
 
     def id_exists(self, passive_data_id):
-        return exists(self.path + '\\' + str(passive_data_id))
+        paths = glob.glob(self.path + '\\' + str(passive_data_id) + '*')
+        return len(paths) != 0
 
     def remove_data_by_id(self, passive_data_id):
-        remove(self.path + '\\' + str(passive_data_id))
+        paths = glob.glob(self.path + '\\' + str(passive_data_id) + '*')
+        if len(paths) == 1:
+            remove(paths[0])
 
     def get_all_data(self):
         datafiles = [f for f in listdir(self.path) if isfile(join(self.path, f))]
@@ -29,7 +34,7 @@ class EntityDAO:
         return passive_data_list
 
     def save_or_update_data(self, passive_data):
-        with open(self.path + '\\' + str(passive_data.id), 'wb+') as f:
+        with open(self.path + '\\' + str(passive_data.id) + '_' + passive_data.name, 'wb+') as f:
             pickle.dump(passive_data, f)
 
 
