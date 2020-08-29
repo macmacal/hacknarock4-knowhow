@@ -26,6 +26,10 @@ class EntityDAO:
         paths = glob.glob(self.path + '\\' + str(data_id) + '*')
         return len(paths) != 0
 
+    def name_exists(self, data_name):
+        paths = glob.glob(self.path + '\\?_' + str(data_name))
+        return len(paths) != 0
+
     def remove_data_by_id(self, data_id):
         paths = glob.glob(self.path + '\\' + str(data_id) + '*')
         if len(paths) == 1:
