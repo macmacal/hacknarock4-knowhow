@@ -21,11 +21,7 @@ class PassiveDataInspector(Screen):
     other = ObjectProperty(None)
 
     def on_enter(self, *args):
-        if self.item_id.text != '':
-            self.passive_data = DataDAO.get_data_by_id(int(self.item_id.text))
-        else:
-            self.passive_data = DataDAO.get_data_by_name(self.namee.text)
-
+        self.passive_data = DataDAO.get_data_by_id(int(self.item_id.text))
         self.show_passive_data()
 
     def btn_save(self):
