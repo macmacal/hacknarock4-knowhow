@@ -1,6 +1,7 @@
 from kivy.uix.screenmanager import Screen
 from kivy.properties import ObjectProperty
 from data.PassiveData import PassiveData
+from data.ActiveData import ActiveData
 from database.EntityDAO import DataDAO
 from gui.popup import information_poup
 from gui.popup import confirmation_poup
@@ -19,10 +20,28 @@ class PassiveDataInspector(Screen):
     acquire_date = ObjectProperty(None)
     ports = ObjectProperty(None)
     other = ObjectProperty(None)
+    tutorials = ObjectProperty(None)
 
     def on_enter(self, *args):
         self.passive_data = DataDAO.get_data_by_id(int(self.item_id.text))
         self.show_passive_data()
+        self.show_active_data()
+
+    def btn_new_tutorial(self):
+        for i in self.passive_data.tutorials:
+            if i.name == "New tutorial":
+                information_poup(msg='Can not create a new tutorial:\n A new tutorial already exists!')
+                return
+        self.passive_data.tutorials.append(ActiveData(name='New tutorial', tutorial='Step by step.'))
+        self.parse_to_passive_data()
+        DataDAO.save_or_update_data(data=self.passive_data)
+        self.manager.get_screen('active_data_inspector').text_title.text = 'New tutorial'
+        self.manager.current = 'active_data_inspector'
+
+    def enter_tutorial(self, tutorial=''):
+        self.manager.get_screen('active_data_inspector').text_title.text = tutorial
+        self.manager.current = 'active_data_inspector'
+        pass
 
     def btn_save(self):
         self.parse_to_passive_data()
@@ -57,3 +76,13 @@ class PassiveDataInspector(Screen):
         self.acquire_date.text = self.passive_data.acquire_date.strftime('%d/%m/%y %H:%M:%S')
         self.ports.text = str(self.passive_data.ports)
         self.other.text = str(self.passive_data.other)
+
+    def show_active_data(self):
+        tuts_list = []
+        for i in self.passive_data.tutorials:
+            tuts_list.append(' > [ref={}][b][u]{}[/u][/b][/ref]'.format(i.name, i.name))
+
+        if len(tuts_list) == 0:
+            self.tutorials.text = '[b]There are no tutorials for this item.[/b]'
+        else:
+            self.tutorials.text = '\n'.join(tuts_list)
