@@ -1,5 +1,5 @@
 import pickle
-from os import listdir
+from os import listdir, remove
 from os.path import isfile, join
 
 
@@ -11,6 +11,9 @@ class PassiveDataDAO:
         with open(self.path + '\\' + str(passive_data_id), 'rb') as f:
             passive_data = pickle.load(f)
         return passive_data
+
+    def remove_passive_data_by_id(self, passive_data_id):
+        remove(self.path + '\\' + str(passive_data_id))
 
     def get_passive_data(self):
         datafiles = [f for f in listdir(self.path) if isfile(join(self.path, f))]
