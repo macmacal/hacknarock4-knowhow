@@ -34,8 +34,10 @@ class EntityDAO:
         return passive_data_list
 
     def save_or_update_data(self, passive_data):
-        with open(self.path + '\\' + str(passive_data.id) + '_' + passive_data.name, 'wb+') as f:
-            pickle.dump(passive_data, f)
+        paths = glob.glob(self.path + '\\' + str(passive_data.id) + '*')
+        if len(paths) == 1:
+            with open(paths[0], 'wb+') as f:
+                pickle.dump(passive_data, f)
 
 
 DataDAO = EntityDAO(constants.DATABASE_PATH)
