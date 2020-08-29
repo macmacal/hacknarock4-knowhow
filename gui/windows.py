@@ -2,20 +2,32 @@ from kivy.app import App
 from kivy.lang import Builder
 from kivy.uix.screenmanager import ScreenManager, Screen
 from kivy.properties import ObjectProperty
+from data.PassiveData import PassiveData
+from database.PassiveDataFactory import get_passive_data
 
-ID = "123456789"
-NAME = "Drukarka"
-PRODUCER = "BIGBRO"
-MODEL = "DCP-J315"
-SERIAL_NUMBER = "123456"
-ACTIVATION_DATE = "DEJT 1"
-PURCHASE_DATE = "DEJT 2"
-PORTS = "PORTS 1, PORTS 2"
-OTHER = "AHJOs"
+
+def parse_passive_data_to_list(db=()):
+    data_list = ["ID  -  NAME"]
+    for it in db:
+        data_list.append("{}  -  {}".format(str(it.id), str(it.name)))
+    return "\n".join(data_list)
 
 
 class MainWindow(Screen):
     pass
+
+
+class DatabaseList(Screen):
+    db_preview = ObjectProperty(None)
+    id_input = ObjectProperty(None)
+
+    def on_enter(self, *args):
+        database = get_passive_data()
+        self.db_preview.text = parse_passive_data_to_list(database)
+
+    def btn_inspection(self):
+        screen2 = self.manager.get_screen('passive_data_inspector')
+        screen2.ids.item_id.text = self.id_input.text
 
 
 class PassiveDataInspector(Screen):
@@ -29,16 +41,19 @@ class PassiveDataInspector(Screen):
     ports = ObjectProperty(None)
     other = ObjectProperty(None)
 
+    db = get_passive_data()
+
     def on_enter(self, *args):
-        self.item_id.text = ID
-        self.namee.text = NAME
-        self.producer.text = PRODUCER
-        self.model.text = MODEL
-        self.serial_number.text = SERIAL_NUMBER
-        self.activation_date.text = ACTIVATION_DATE
-        self.purchase_date.text = PURCHASE_DATE
-        self.ports.text = PORTS
-        self.other.text = OTHER
+        data = self.db[int(self.item_id.text) - 1]
+        self.namee.text = str(data.name)
+        self.producer.text = str(data.producer)
+        self.model.text = str(data.model)
+        self.serial_number.text = str(data.serial_number)
+        self.activation_date.text = str(data.activation_date)
+        self.purchase_date.text = str(data.acquire_date)
+        self.ports.text = str(data.ports)
+        self.other.text = str(data.other)
+
 
 class WindowManager(ScreenManager):
     pass
@@ -47,7 +62,9 @@ class WindowManager(ScreenManager):
 kivy_builder = Builder.load_file("./gui/windows.kv")
 sm = WindowManager()
 
-screens = [PassiveDataInspector(name="passive_data_inspector"), MainWindow(name="main")]
+screens = [DatabaseList(name="database_list"),
+           PassiveDataInspector(name="passive_data_inspector"),
+           MainWindow(name="main")]
 for screen in screens:
     sm.add_widget(screen)
 

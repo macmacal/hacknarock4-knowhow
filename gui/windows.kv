@@ -1,5 +1,6 @@
 WindowManager:
     MainWindow:
+    DatabaseList:
     PassiveDataInspector:
 
 <MainWindow>:
@@ -7,14 +8,51 @@ WindowManager:
 
     GridLayout:
         cols: 1
+
         Label:
-            text: "KNOW-HOW"
+            text: "NOŁ-AŁ - RTV & domestic electronics knowledge storage"
 
         Button:
-            text: "Passive Data Inspector"
+            text: "Database list"
             on_release:
-                app.root.current = "passive_data_inspector"
+                app.root.current = "database_list"
                 root.manager.transition.direction = "left"
+
+
+<DatabaseList>:
+    name: "database_list"
+
+    db_preview: db_preview
+    id_input: id_input
+
+    GridLayout:
+        cols: 1
+
+        Label:
+            id: db_preview
+            text: "No database!"
+
+        GridLayout:
+            cols: 2
+
+            Label:
+                text: "Type ID to inspect: "
+            TextInput:
+                id: id_input
+                text: "1"
+                multiline: False
+
+            Button:
+                text: "Back to main screen"
+                on_release:
+                    app.root.current = "main"
+                    root.manager.transition.direction = "right"
+            Button:
+                text: "Passive Data Inspector"
+                on_release:
+                    root.manager.get_screen('passive_data_inspector').item_id.text = id_input.text
+                    app.root.current = "passive_data_inspector"
+                    root.manager.transition.direction = "left"
 
 <PassiveDataInspector>:
     name: "passive_data_inspector"
@@ -90,7 +128,7 @@ WindowManager:
                 multiline: False
 
         Button:
-            text: "Back to Main Screen"
+            text: "Back"
             on_release:
-                app.root.current = "main"
+                app.root.current = "database_list"
                 root.manager.transition.direction = "right"
