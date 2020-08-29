@@ -1,5 +1,7 @@
 from datetime import datetime
 from data.PassiveData import PassiveData
+from database.PassiveDataDAO import PassiveDataDAO
+import constants
 
 
 def get_passive_data():
@@ -17,3 +19,8 @@ def get_passive_data():
     pd4.other['ink'] = 'only red ink'
 
     return [pd1, pd2, pd3, pd4]
+
+
+def get_passive_data_from_database():
+    pdd = PassiveDataDAO(constants.DATABASE_PATH)
+    return pdd.get_passive_data()
