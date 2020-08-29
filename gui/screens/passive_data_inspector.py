@@ -23,7 +23,11 @@ class PassiveDataInspector(Screen):
     tutorials = ObjectProperty(None)
 
     def on_enter(self, *args):
-        self.passive_data = DataDAO.get_data_by_id(int(self.item_id.text))
+        if self.item_id.text != '':
+            self.passive_data = DataDAO.get_data_by_id(int(self.item_id.text))
+        else:
+            self.passive_data = DataDAO.get_data_by_name(self.namee.text)
+
         self.show_passive_data()
         self.show_active_data()
 
@@ -37,7 +41,7 @@ class PassiveDataInspector(Screen):
 
     def btn_save(self):
         self.parse_to_passive_data()
-        DataDAO.save_or_update_data(passive_data=self.passive_data)
+        DataDAO.save_or_update_data(data=self.passive_data)
         information_poup(msg='The item has been saved!')
 
     def btn_delete(self):
@@ -59,6 +63,7 @@ class PassiveDataInspector(Screen):
         self.passive_data.other = literal_eval(self.other.text)
 
     def show_passive_data(self):
+        self.item_id.text = str(self.passive_data.id)
         self.namee.text = str(self.passive_data.name)
         self.producer.text = str(self.passive_data.producer)
         self.model.text = str(self.passive_data.model)
