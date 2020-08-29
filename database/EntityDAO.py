@@ -42,9 +42,10 @@ class EntityDAO:
 
     def save_or_update_data(self, data):
         paths = glob.glob(self.path + '\\' + str(data.id) + '*')
-        if len(paths) == 1:
-            with open(paths[0], 'wb+') as f:
-                pickle.dump(data, f)
+        if len(paths) != 0:
+            self.remove_data_by_id(data.id)
+        with open(self.path + '\\' + str(data.id) + '_' + data.name, 'wb+') as f:
+            pickle.dump(data, f)
 
 
 DataDAO = EntityDAO(constants.DATABASE_PATH)
