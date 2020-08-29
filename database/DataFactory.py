@@ -2,11 +2,11 @@ from datetime import datetime
 
 from data.ActiveData import ActiveData
 from data.PassiveData import PassiveData
-from database.PassiveDataDAO import PassiveDataDAO
+from database.EntityDAO import EntityDAO
 import constants
 
 
-def get_passive_data():
+def get_data():
     pd1 = PassiveData(1, 'TV', 'sony', 'a', 112, datetime.now(), datetime.now())
     pd1.ports['usb'] = 5
     pd1.ports['hdmi'] = 1
@@ -26,6 +26,6 @@ def get_passive_data():
     return [pd1, pd2, pd3, pd4]
 
 
-def get_passive_data_from_database():
-    pdd = PassiveDataDAO(constants.DATABASE_PATH)
-    return pdd.get_passive_data()
+def get_data_from_database():
+    pdd = EntityDAO(constants.DATABASE_PATH)
+    return pdd.get_all_data()
