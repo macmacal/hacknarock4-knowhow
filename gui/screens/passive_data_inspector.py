@@ -32,7 +32,15 @@ class PassiveDataInspector(Screen):
         self.show_active_data()
 
     def btn_new_tutorial(self):
-        pass
+        for i in self.passive_data.tutorials:
+            if i.name == "New tutorial":
+                information_poup(msg='Can not create a new tutorial:\n A new tutorial already exists!')
+                return
+        self.passive_data.tutorials.append(ActiveData(name='New tutorial', tutorial='Step by step.'))
+        self.parse_to_passive_data()
+        DataDAO.save_or_update_data(data=self.passive_data)
+        self.manager.get_screen('active_data_inspector').text_title.text = 'New tutorial'
+        self.manager.current = 'active_data_inspector'
 
     def enter_tutorial(self, tutorial=''):
         self.manager.get_screen('active_data_inspector').text_title.text = tutorial

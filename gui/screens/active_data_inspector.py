@@ -2,6 +2,8 @@ from kivy.uix.screenmanager import Screen
 from kivy.properties import ObjectProperty
 from data.ActiveData import ActiveData
 from database.EntityDAO import DataDAO
+from gui.popup import information_poup
+from gui.popup import confirmation_poup
 
 
 class ActiveDataInspector(Screen):
@@ -19,8 +21,9 @@ class ActiveDataInspector(Screen):
     def get_tutorial_text(self):
         for i in DataDAO.get_data_by_id(self.selected_item).tutorials:
             if i.name == self.active_data.name:
-                self.active_data.tutorial = i.tutorial
+                self.active_data = i
         self.text_input.text = self.active_data.tutorial
+        self.text_title.text = self.active_data.name
         self.btn_preview()
 
     def btn_preview(self):
@@ -28,7 +31,32 @@ class ActiveDataInspector(Screen):
         # TODO: add parsing for [ref] markup formatting
 
     def btn_save(self):
-        pass
+        self.btn_preview()
+        passive_data = DataDAO.get_data_by_id(self.selected_item)
+        index = 0
+
+        for i in passive_data.tutorials:
+            if i.name == self.active_data.name:
+               index = passive_data.tutorials.index(i)
+        passive_data.tutorials.pop(index)
+        self.active_data.name = self.text_title.text
+        self.active_data.tutorial = self.text_input.text
+        passive_data.tutorials.insert(index, self.active_data)
+        DataDAO.save_or_update_data(passive_data)
+
+        information_poup(msg='The item has been saved!')
 
     def btn_delete(self):
-        pass
+        confirmation_poup(msg="Are you sure?", yes_action=self.delete_active_data)
+
+    def delete_active_data(self, instance):
+        passive_data = DataDAO.get_data_by_id(self.selected_item)
+        index = 0
+        for i in passive_data.tutorials:
+            if i.name == self.active_data.name:
+                index = passive_data.tutorials.index(i)
+        passive_data.tutorials.pop(index)
+        DataDAO.save_or_update_data(passive_data)
+        self.manager.current = 'passive_data_inspector'
+
+
