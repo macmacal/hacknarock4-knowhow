@@ -2,6 +2,8 @@ from kivy.app import App
 from kivy.lang import Builder
 from kivy.uix.screenmanager import ScreenManager, Screen
 from kivy.properties import ObjectProperty
+from data.PassiveData import PassiveData
+from database.PassiveDataFactory import get_passive_data
 
 ID = "123456789"
 NAME = "Drukarka"
@@ -19,6 +21,8 @@ class MainWindow(Screen):
 
 
 class PassiveDataInspector(Screen):
+    data = get_passive_data()[0]
+
     item_id = ObjectProperty(None)
     namee = ObjectProperty(None)
     producer = ObjectProperty(None)
@@ -30,15 +34,15 @@ class PassiveDataInspector(Screen):
     other = ObjectProperty(None)
 
     def on_enter(self, *args):
-        self.item_id.text = ID
-        self.namee.text = NAME
-        self.producer.text = PRODUCER
-        self.model.text = MODEL
-        self.serial_number.text = SERIAL_NUMBER
-        self.activation_date.text = ACTIVATION_DATE
-        self.purchase_date.text = PURCHASE_DATE
-        self.ports.text = PORTS
-        self.other.text = OTHER
+        self.item_id.text = str(self.data.id)
+        self.namee.text = str(self.data.name)
+        self.producer.text = str(self.data.producer)
+        self.model.text = str(self.data.model)
+        self.serial_number.text = str(self.data.serial_number)
+        self.activation_date.text = str(self.data.activation_date)
+        self.purchase_date.text = str(self.data.acquire_date)
+        self.ports.text = str(self.data.ports)
+        self.other.text = str(self.data.other)
 
 class WindowManager(ScreenManager):
     pass
