@@ -1,7 +1,7 @@
 from kivy.uix.screenmanager import Screen
 from kivy.properties import ObjectProperty
 from data.PassiveData import PassiveData
-from database.PassiveDataDAO import DataDAO
+from database.PassiveDataDAO import PassDataDAO
 from gui.popup import information_poup
 from gui.popup import confirmation_poup
 from datetime import datetime
@@ -21,19 +21,19 @@ class PassiveDataInspector(Screen):
     other = ObjectProperty(None)
 
     def on_enter(self, *args):
-        self.passive_data = DataDAO.get_passive_data_by_id(int(self.item_id.text))
+        self.passive_data = PassDataDAO.get_passive_data_by_id(int(self.item_id.text))
         self.show_passive_data()
 
     def btn_save(self):
         self.parse_to_passive_data()
-        DataDAO.save_or_update_passive_data(passive_data=self.passive_data)
+        PassDataDAO.save_or_update_passive_data(passive_data=self.passive_data)
         information_poup(msg='The item has been saved!')
 
     def btn_delete(self):
         confirmation_poup(msg="Are you sure?", yes_action=self.delete_passive_data)
 
     def delete_passive_data(self, instance):
-        DataDAO.remove_passive_data_by_id(self.passive_data.id)
+        PassDataDAO.remove_passive_data_by_id(self.passive_data.id)
         self.manager.current = 'database_list'
 
     def parse_to_passive_data(self):

@@ -33,4 +33,4 @@ class PassiveDataDAO:
             pickle.dump(passive_data, f)
 
 
-DataDAO = PassiveDataDAO(constants.DATABASE_PATH)
+PassDataDAO = PassiveDataDAO(constants.DATABASE_PATH)

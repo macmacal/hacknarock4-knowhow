@@ -2,6 +2,7 @@ WindowManager:
     MainWindow:
     DatabaseList:
     PassiveDataInspector:
+    ActiveDataInspector:
 
 <MainWindow>:
     name: "main_window"
@@ -12,11 +13,89 @@ WindowManager:
         Label:
             text: "NOŁ-AŁ - RTV & domestic electronics knowledge storage"
 
+        GridLayout:
+            rows: 2
+
+            Button:
+                text: "Database list"
+                on_release:
+                    app.root.current = "database_list"
+                    root.manager.transition.direction = "left"
+
+            Button:
+                text: "Active data inspector TEST"
+                on_release:
+                    app.root.current = "active_data_inspector"
+                    root.manager.transition.direction = "up"
+
+<ActiveDataInspector>:
+    name: "active_data_inspector"
+
+    text_input: text_input
+    text_preview: text_preview
+
+    GridLayout:
+        cols: 2
+
+        GridLayout:
+            rows: 2
+
+            Label:
+                size_hint_y: None
+                height: dp(48)
+                text: "[b]Edit article[/b]"
+                markup: True
+            TextInput:
+                id: text_input
+                multiline: True
+
+        GridLayout:
+            rows: 2
+
+            Label:
+                size_hint_y: None
+                height: dp(48)
+                text: "[b]Preview[/b]"
+                markup: True
+            Label:
+                id: text_preview
+                text: "[b]TEST[/b]"
+                text_size: root.width/2, root.height-3*dp(48)
+                size: self.texture_size
+                valign: 'top'
+                halign: 'left'
+                markup: True
+                on_ref_press:
+                    import webbrowser
+                    webbrowser.open(args[1])
+
+
         Button:
-            text: "Database list"
-            on_release:
-                app.root.current = "database_list"
-                root.manager.transition.direction = "left"
+            size_hint_y: None
+            height: dp(48)
+            text: "Preview"
+            on_press: root.btn_preview()
+
+        Button:
+            size_hint_y: None
+            height: dp(48)
+            text: "Save"
+            on_press: root.showedit()
+
+        Button:
+            size_hint_y: None
+            height: dp(48)
+            text: "Return"
+            on_press:
+                app.root.current = "main_window"
+                root.manager.transition.direction = "down"
+
+        Button:
+            size_hint_y: None
+            height: dp(48)
+            text: "Delete"
+            on_press: root.showedit()
+
 
 
 <DatabaseList>:
