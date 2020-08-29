@@ -10,7 +10,7 @@ class DatabaseList(Screen):
     id_input = ObjectProperty(None)
 
     def parse_passive_data_to_list(self):
-        data_list = ['ID  -  NAME']
+        data_list = []
         for it in DataDAO.get_all_data():
             data_list.append('{}  -  {}'.format(str(it.id), str(it.name)))
         return "\n".join(data_list)

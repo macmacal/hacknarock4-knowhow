@@ -1,3 +1,6 @@
+#: kivy 1.10.0
+#: import TreeViewLabel kivy.uix.treeview.TreeViewLabel
+
 WindowManager:
     MainWindow:
     DatabaseList:
@@ -18,85 +21,10 @@ WindowManager:
 
             Button:
                 text: "Database list"
+                font_size: 24
                 on_release:
                     app.root.current = "database_list"
                     root.manager.transition.direction = "left"
-
-            Button:
-                text: "Active data inspector TEST"
-                on_release:
-                    app.root.current = "active_data_inspector"
-                    root.manager.transition.direction = "up"
-
-<ActiveDataInspector>:
-    name: "active_data_inspector"
-
-    text_input: text_input
-    text_preview: text_preview
-
-    GridLayout:
-        cols: 2
-
-        GridLayout:
-            rows: 2
-
-            Label:
-                size_hint_y: None
-                height: dp(48)
-                text: "[b]Edit article[/b]"
-                markup: True
-            TextInput:
-                id: text_input
-                multiline: True
-
-        GridLayout:
-            rows: 2
-
-            Label:
-                size_hint_y: None
-                height: dp(48)
-                text: "[b]Preview[/b]"
-                markup: True
-            Label:
-                id: text_preview
-                text: "[b]TEST[/b]"
-                text_size: root.width/2, root.height-3*dp(48)
-                size: self.texture_size
-                valign: 'top'
-                halign: 'left'
-                markup: True
-                on_ref_press:
-                    import webbrowser
-                    webbrowser.open(args[1])
-
-
-        Button:
-            size_hint_y: None
-            height: dp(48)
-            text: "Preview"
-            on_press: root.btn_preview()
-
-        Button:
-            size_hint_y: None
-            height: dp(48)
-            text: "Save"
-            on_press: root.showedit()
-
-        Button:
-            size_hint_y: None
-            height: dp(48)
-            text: "Return"
-            on_press:
-                app.root.current = "main_window"
-                root.manager.transition.direction = "down"
-
-        Button:
-            size_hint_y: None
-            height: dp(48)
-            text: "Delete"
-            on_press: root.showedit()
-
-
 
 <DatabaseList>:
     name: "database_list"
@@ -108,41 +36,85 @@ WindowManager:
         cols: 1
 
         Label:
+            text: "Database of all items\n ID - NAME"
+            font_size: 24
+            valign: 'top'
+            halign: 'center'
+            size_hint_y: None
+            height: dp(96)
+            text_size: root.width, dp(96)
+
+
+        Label:
             id: db_preview
             text: "No database!"
+            font_size: 18
+            text_size: root.width, root.height-2*dp(48)-dp(96)
+            size: self.texture_size
+            valign: 'top'
+            halign: 'center'
+            markup: True
+            on_ref_press:
+                import webbrowser
+                webbrowser.open(args[1])
+
 
         GridLayout:
             cols: 2
+            size_hint_y: None
+            height: dp(48)
 
             Label:
                 text: "Type ID to proceed: "
+                size_hint_y: None
+                font_size: 24
+                size_hint_y: None
+                height: dp(48)
+
             TextInput:
                 id: id_input
                 text: "1"
+                font_size: 32
                 multiline: False
+                size_hint_y: None
+                height: dp(48)
+
+
+        GridLayout:
+            cols: 3
+            size_hint_y: None
+            height: dp(48)
 
             Button:
                 text: "Back to main screen"
+                font_size: 24
+                size_hint_y: None
+                height: dp(48)
                 on_release:
                     app.root.current = "main_window"
                     root.manager.transition.direction = "right"
 
-            GridLayout:
-                rows: 2
+            Button:
+                text: "Create new"
+                font_size: 24
+                size_hint_y: None
+                height: dp(48)
+                on_release:
+                    root.btn_create_new()
+                    root.manager.transition.direction = "left"
 
-                Button:
-                    text: "Data inspector"
-                    on_release:
-                        root.btn_inspect()
-                        root.manager.transition.direction = "left"
-                Button:
-                    text: "Create new"
-                    on_release:
-                        root.btn_create_new()
-                        root.manager.transition.direction = "left"
+            Button:
+                text: "Data inspector"
+                font_size: 24
+                size_hint_y: None
+                height: dp(48)
+                on_release:
+                    root.btn_inspect()
+                    root.manager.transition.direction = "left"
 
 <PassiveDataInspector>:
     name: "passive_data_inspector"
+
 
     item_id: item_id
     namee: namee
@@ -154,6 +126,8 @@ WindowManager:
     ports: ports
     other: other
 
+    tutorials: tutorials
+
     GridLayout:
         cols: 1
 
@@ -161,10 +135,12 @@ WindowManager:
             cols: 2
 
             Label:
-                text: "ID"
+                text: "[b]ID[/b]"
+                markup: True
             Label:
                 id: item_id
                 multiline: False
+
 
             Label:
                 text: "Name"
@@ -216,13 +192,6 @@ WindowManager:
 
         GridLayout:
             cols: 2
-
-            Button:
-                text: "Back"
-                on_release:
-                    app.root.current = "database_list"
-                    root.manager.transition.direction = "right"
-
             GridLayout:
                 cols: 1
 
@@ -236,3 +205,133 @@ WindowManager:
                     on_release:
                         root.btn_delete()
                         root.manager.transition.direction = "right"
+
+                Button:
+                    text: "Back"
+                    on_release:
+                        app.root.current = "database_list"
+                        root.manager.transition.direction = "right"
+
+            GridLayout:
+                cols: 1
+
+                Label:
+                    text: "Available tutorials"
+                    font_size: 24
+                    valign: 'top'
+                    halign: 'center'
+                    size_hint_y: None
+                    height: dp(48)
+                    text_size: root.width, dp(48)
+
+                Label:
+                    id: tutorials
+                    text: '[b]There are no tutorials for this item.[/b]\b [ref="TEST"]Linkacz[/ref]'
+                    text_size: root.width/2, root.height/2-2*dp(48)
+                    size: self.texture_size
+                    valign: 'top'
+                    halign: 'left'
+                    markup: True
+                    on_ref_press:
+                        root.enter_tutorial(args[1])
+                        root.manager.transition.direction = "up"
+
+                Button:
+                    text: "Add new"
+                    font_size: 24
+                    height: dp(48)
+                    size_hint_y: None
+                    on_release:
+                        root.btn_new_tutorial()
+
+
+
+
+<ActiveDataInspector>:
+    name: "active_data_inspector"
+
+    text_title: text_title
+    text_input: text_input
+    text_preview: text_preview
+
+    GridLayout:
+        cols: 2
+
+        GridLayout:
+            rows: 2
+
+            GridLayout:
+                cols: 2
+                size_hint_y: None
+                height: dp(32)
+
+                Label:
+                    text: '[b]Title:[/b]'
+                    size_hint_y: None
+                    size_hint_x: None
+                    height: dp(32)
+                    width: root.width/16
+                    markup: True
+                TextInput:
+                    id: text_title
+                    size_hint_y: None
+                    height: dp(32)
+                    text: "Name of the article."
+                    markup: True
+
+
+            TextInput:
+                id: text_input
+                multiline: True
+                text_size: root.width/2, root.height-2*dp(48)-dp(32)
+
+        GridLayout:
+            rows: 2
+
+            Label:
+                size_hint_y: None
+                height: dp(32)
+                text: "[b]Preview: [/b]"
+                markup: True
+            Label:
+                id: text_preview
+                text: "[b]TEST[/b]"
+                text_size: root.width/2, root.height-2*dp(48)-dp(32)
+                size: self.texture_size
+                valign: 'top'
+                halign: 'left'
+                markup: True
+                on_ref_press:
+                    import webbrowser
+                    webbrowser.open(args[1])
+
+
+        Button:
+            text: "Preview"
+            font_size: 32
+            size_hint_y: None
+            height: dp(48)
+            on_press: root.btn_preview()
+
+        Button:
+            text: "Save"
+            font_size: 32
+            size_hint_y: None
+            height: dp(48)
+            on_press: root.btn_save()
+
+        Button:
+            text: "Return"
+            font_size: 32
+            size_hint_y: None
+            height: dp(48)
+            on_press:
+                app.root.current = "passive_data_inspector"
+                root.manager.transition.direction = "down"
+
+        Button:
+            text: "Delete"
+            font_size: 32
+            size_hint_y: None
+            height: dp(48)
+            on_press: root.btn_delete()

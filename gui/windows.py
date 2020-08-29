@@ -14,9 +14,9 @@ class WindowManager(ScreenManager):
 kivy_builder = Builder.load_file('./gui/layout.kv')
 sm = WindowManager()
 
-screens = [ActiveDataInspector(name='active_data_inspector'),
-           DatabaseList(name='database_list'),
+screens = [DatabaseList(name='database_list'),
            PassiveDataInspector(name='passive_data_inspector'),
+           ActiveDataInspector(name='active_data_inspector'),
            MainWindow(name='main_window')]
 for screen in screens:
     sm.add_widget(screen)
