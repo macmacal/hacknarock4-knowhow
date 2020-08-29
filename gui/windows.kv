@@ -19,6 +19,15 @@ WindowManager:
 <PassiveDataInspector>:
     name: "passive_data_inspector"
 
+    item_id: item_id
+    namee: namee
+    producer: producer
+    model: model
+    serial_number: serial_number
+    activation_date: activation_date
+    purchase_date: purchase_date
+    ports: ports
+    other: other
 
     GridLayout:
         cols: 1
@@ -29,13 +38,13 @@ WindowManager:
             Label:
                 text: "ID"
             TextInput:
-                id: id
+                id: item_id
                 multiline: False
 
             Label:
                 text: "Name"
             TextInput:
-                id: name
+                id: namee
                 multiline: False
 
             Label:
