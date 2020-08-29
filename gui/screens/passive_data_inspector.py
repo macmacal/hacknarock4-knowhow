@@ -3,6 +3,7 @@ from kivy.properties import ObjectProperty
 from data.PassiveData import PassiveData
 from database.PassiveDataDAO import DataDAO
 from gui.popup import information_poup
+from gui.popup import confirmation_poup
 from datetime import datetime
 from ast import literal_eval
 
@@ -23,9 +24,17 @@ class PassiveDataInspector(Screen):
         self.passive_data = DataDAO.get_passive_data_by_id(int(self.item_id.text))
         self.show_passive_data()
 
-    def update_passive_data(self):
+    def btn_save(self):
         self.parse_to_passive_data()
         DataDAO.save_or_update_passive_data(passive_data=self.passive_data)
+        information_poup(msg='The item has been saved!')
+
+    def btn_delete(self):
+        confirmation_poup(msg="Are you sure?", yes_action=self.delete_passive_data)
+
+    def delete_passive_data(self, instance):
+        DataDAO.remove_passive_data_by_id(self.passive_data.id)
+        self.manager.current = 'database_list'
 
     def parse_to_passive_data(self):
         self.passive_data.id = int(self.item_id.text)
@@ -47,6 +56,3 @@ class PassiveDataInspector(Screen):
         self.acquire_date.text = self.passive_data.acquire_date.strftime('%d/%m/%y %H:%M:%S')
         self.ports.text = str(self.passive_data.ports)
         self.other.text = str(self.passive_data.other)
-
-    def popup_saved(self):
-        information_poup(msg='The item has been saved!')

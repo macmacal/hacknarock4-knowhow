@@ -36,7 +36,7 @@ WindowManager:
             cols: 2
 
             Label:
-                text: "Type ID to inspect: "
+                text: "Type ID to proceed: "
             TextInput:
                 id: id_input
                 text: "1"
@@ -47,11 +47,20 @@ WindowManager:
                 on_release:
                     app.root.current = "main_window"
                     root.manager.transition.direction = "right"
-            Button:
-                text: "Passive Data Inspector"
-                on_release:
-                    root.btn_inspect()
-                    root.manager.transition.direction = "left"
+
+            GridLayout:
+                rows: 2
+
+                Button:
+                    text: "Data inspector"
+                    on_release:
+                        root.btn_inspect()
+                        root.manager.transition.direction = "left"
+                Button:
+                    text: "Create new"
+                    on_release:
+                        root.btn_create_new()
+                        root.manager.transition.direction = "left"
 
 <PassiveDataInspector>:
     name: "passive_data_inspector"
@@ -135,8 +144,16 @@ WindowManager:
                     app.root.current = "database_list"
                     root.manager.transition.direction = "right"
 
-            Button:
-                text: "Save"
-                on_release:
-                    root.update_passive_data()
-                    root.popup_saved()
+            GridLayout:
+                cols: 1
+
+                Button:
+                    text: "Save"
+                    on_release:
+                        root.btn_save()
+
+                Button:
+                    text: "Delete"
+                    on_release:
+                        root.btn_delete()
+                        root.manager.transition.direction = "right"
