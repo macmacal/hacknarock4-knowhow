@@ -29,7 +29,8 @@ class DatabaseList(Screen):
                 return
         if self.name_input.text != '':
             if DataDAO.name_exists(self.name_input.text):
-                self.manager.get_screen('passive_data_inspector').namee.text = self.name_input.text
+                id = DataDAO.get_data_by_name(self.name_input.text).id
+                self.manager.get_screen('passive_data_inspector').item_id.text = str(id)
                 self.manager.current = 'passive_data_inspector'
             else:
                 information_poup(msg='There is no item with name {} !'.format(self.id_input.text))
