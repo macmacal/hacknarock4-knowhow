@@ -2,8 +2,11 @@ from kivy.app import App
 from kivy.lang import Builder
 from kivy.uix.screenmanager import ScreenManager, Screen
 from kivy.properties import ObjectProperty
+from database.PassiveDataDAO import PassiveDataDAO
 from data.PassiveData import PassiveData
-from database.PassiveDataFactory import get_passive_data
+import constants
+
+DataDAO = PassiveDataDAO(constants.DATABASE_PATH)
 
 
 def parse_passive_data_to_list(db=()):
@@ -22,12 +25,8 @@ class DatabaseList(Screen):
     id_input = ObjectProperty(None)
 
     def on_enter(self, *args):
-        database = get_passive_data()
+        database = DataDAO.get_passive_data()
         self.db_preview.text = parse_passive_data_to_list(database)
-
-    def btn_inspection(self):
-        screen2 = self.manager.get_screen('passive_data_inspector')
-        screen2.ids.item_id.text = self.id_input.text
 
 
 class PassiveDataInspector(Screen):
@@ -41,10 +40,8 @@ class PassiveDataInspector(Screen):
     ports = ObjectProperty(None)
     other = ObjectProperty(None)
 
-    db = get_passive_data()
-
     def on_enter(self, *args):
-        data = self.db[int(self.item_id.text) - 1]
+        data = DataDAO.get_passive_data_by_id(int(self.item_id.text))
         self.namee.text = str(data.name)
         self.producer.text = str(data.producer)
         self.model.text = str(data.model)
