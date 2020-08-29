@@ -1,5 +1,4 @@
 class PDFData:
-    def __init__(self, name, desc, link):
+    def __init__(self, name, link):
         self.name = name
-        self.desc = desc
         self.link = link
