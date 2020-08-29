@@ -15,6 +15,13 @@ class EntityDAO:
             passive_data = pickle.load(f)
         return passive_data
 
+    def get_data_by_name(self, passive_data_name):
+        paths = glob.glob(self.path + '\\?_' + str(passive_data_name))
+        if len(paths) != 0:
+            with open(paths[0], 'rb') as f:
+                passive_data = pickle.load(f)
+            return passive_data
+
     def id_exists(self, passive_data_id):
         paths = glob.glob(self.path + '\\' + str(passive_data_id) + '*')
         return len(paths) != 0
