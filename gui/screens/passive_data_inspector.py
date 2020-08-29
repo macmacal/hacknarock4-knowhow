@@ -26,7 +26,7 @@ class PassiveDataInspector(Screen):
 
     def btn_save(self):
         self.parse_to_passive_data()
-        DataDAO.save_or_update_data(passive_data=self.passive_data)
+        DataDAO.save_or_update_data(data=self.passive_data)
         information_poup(msg='The item has been saved!')
 
     def btn_delete(self):
