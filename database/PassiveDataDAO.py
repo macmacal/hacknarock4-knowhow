@@ -24,6 +24,6 @@ class PassiveDataDAO:
 
         return passive_data_list
 
-    def save_passive_data(self, passive_data):
+    def save_or_update_passive_data(self, passive_data):
         with open(self.path + '\\' + str(passive_data.id), 'wb+') as f:
             pickle.dump(passive_data, f)
