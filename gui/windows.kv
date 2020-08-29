@@ -63,7 +63,7 @@ WindowManager:
     model: model
     serial_number: serial_number
     activation_date: activation_date
-    purchase_date: purchase_date
+    acquire_date: acquire_date
     ports: ports
     other: other
 
@@ -110,9 +110,9 @@ WindowManager:
                 multiline: False
 
             Label:
-                text: "Purchase date"
+                text: "Acquire date"
             TextInput:
-                id: purchase_date
+                id: acquire_date
                 multiline: False
 
             Label:
@@ -127,8 +127,17 @@ WindowManager:
                 id: other
                 multiline: False
 
-        Button:
-            text: "Back"
-            on_release:
-                app.root.current = "database_list"
-                root.manager.transition.direction = "right"
+        GridLayout:
+            cols: 2
+
+            Button:
+                text: "Back"
+                on_release:
+                    app.root.current = "database_list"
+                    root.manager.transition.direction = "right"
+
+            Button:
+                text: "Save"
+                on_release:
+                    root.update_passive_data()
+                    root.popup_saved()
