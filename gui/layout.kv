@@ -29,38 +29,99 @@ WindowManager:
                 app.root.current = 'database_list'
                 root.manager.transition.direction = 'left'
 
+# Widgets for tables
+<TextInputPopup>:
+    title: "Popup"
+    size_hint: None, None
+    size: 400, 400
+    auto_dismiss: False
+
+    BoxLayout:
+        orientation: "vertical"
+        TextInput:
+            id: txtinput
+            text: root.obj_text
+        Button:
+            size_hint: 1, 0.2
+            text: "Save Changes"
+            on_release:
+                root.obj.update_changes(txtinput.text)
+                root.dismiss()
+        Button:
+            size_hint: 1, 0.2
+            text: "Cancel Changes"
+            on_release: root.dismiss()
+
+
+<TableCell>:
+    # Draw a background to indicate selection
+    markup: True
+    canvas.before:
+        Color:
+            rgba: (.0, 0.9, .1, .3) if self.selected else (0, 0, 0, 1)
+        Rectangle:
+            pos: self.pos
+            size: self.size
+
+<Editable>:
+    # Draw a background to indicate selection
+    markup: True
+    canvas.before:
+        Color:
+            rgba: (.0, 0.9, .1, .3) if self.selected else (0, 0, 0, 1)
+        Rectangle:
+            pos: self.pos
+            size: self.size
+
+
 <DatabaseList>:
     name: 'database_list'
     name_input: name_input
-
-    db_preview: db_preview
     id_input: id_input
 
     GridLayout:
         cols: 1
 
         Label:
-            text: 'Database of all items\n ID - NAME'
+            text: 'Database of all items'
             font_size: 24
             valign: 'top'
             halign: 'center'
             size_hint_y: None
-            height: dp(96)
-            text_size: root.width, dp(96)
+            height: dp(48)
+            text_size: root.width, dp(48)
 
 
-        Label:
-            id: db_preview
-            text: 'No database!'
-            font_size: 18
-            text_size: root.width, root.height-3*dp(48)-dp(96)
-            size: self.texture_size
-            valign: 'top'
-            halign: 'center'
-            markup: True
-            on_ref_press:
-                import webbrowser
-                webbrowser.open(args[1])
+        BoxLayout:
+            orientation: "vertical"
+            size: root.width, root.height-3*dp(48)
+
+            GridLayout:
+                size_hint: 1, None
+                size_hint_y: None
+                height: 25
+                cols: 2
+
+                Label:
+                    text: '[b]ID[/b]'
+                    markup: True
+                Label:
+                    text: '[b]Item name[/b]'
+                    markup: True
+
+            BoxLayout:
+                RecycleView:
+                    viewclass: 'TableCell'
+                    data: [{'text': str(x)} for x in root.loaded_db]
+                    SelectableRecycleGridLayout:
+                        cols: 2
+                        default_size: None, dp(26)
+                        default_size_hint: 1, None
+                        size_hint_y: None
+                        height: self.minimum_height
+                        orientation: 'vertical'
+                        multiselect: True
+                        touch_multiselect: True
 
 
         GridLayout:
@@ -149,8 +210,8 @@ WindowManager:
     serial_number: serial_number
     activation_date: activation_date
     acquire_date: acquire_date
-    ports: ports
-    other: other
+    #ports: ports
+    #other: other
 
     tutorials: tutorials
     documents: documents
@@ -165,75 +226,173 @@ WindowManager:
                 text: '[b]ID[/b]'
                 font_size: 18
                 markup: True
+                size_hint_y: None
+                height: dp(32)
             Label:
                 id: item_id
                 font_size: 18
                 multiline: False
+                size_hint_y: None
+                height: dp(32)
 
 
-            Label:
-                text: '[b]Name[/b]'
-                font_size: 18
-                markup: True
-            TextInput:
-                id: namee
-                multiline: False
+            GridLayout:
+                cols: 2
+                size_hint_y: None
+                height: dp(32)
 
-            Label:
-                text: '[b]Producer[/b]'
-                font_size: 18
-                markup: True
-            TextInput:
-                id: producer
-                multiline: False
+                Label:
+                    text: '[b]Name[/b]'
+                    font_size: 18
+                    markup: True
+                TextInput:
+                    id: namee
+                    multiline: False
 
-            Label:
-                text: '[b]Model[/b]'
-                font_size: 18
-                markup: True
-            TextInput:
-                id: model
-                multiline: False
+            GridLayout:
+                cols: 2
+                size_hint_y: None
+                height: dp(32)
 
-            Label:
-                text: '[b]Serial number[/b]'
-                font_size: 18
-                markup: True
-            TextInput:
-                id: serial_number
-                multiline: False
+                Label:
+                    text: '[b]Producer[/b]'
+                    font_size: 18
+                    markup: True
+                TextInput:
+                    id: producer
+                    multiline: False
 
-            Label:
-                text: '[b]Activation date[/b]'
-                font_size: 18
-                markup: True
-            TextInput:
-                id: activation_date
-                multiline: False
+            GridLayout:
+                cols: 2
+                size_hint_y: None
+                height: dp(32)
 
-            Label:
-                text: '[b]Acquire date[/b]'
-                font_size: 18
-                markup: True
-            TextInput:
-                id: acquire_date
-                multiline: False
+                Label:
+                    text: '[b]Model[/b]'
+                    font_size: 18
+                    markup: True
+                TextInput:
+                    id: model
+                    multiline: False
+
+
+            GridLayout:
+                cols: 2
+                size_hint_y: None
+                height: dp(32)
+
+                Label:
+                    text: '[b]Serial number[/b]'
+                    font_size: 18
+                    markup: True
+                TextInput:
+                    id: serial_number
+                    multiline: False
+
+            GridLayout:
+                cols: 2
+                size_hint_y: None
+                height: dp(32)
+
+                Label:
+                    text: '[b]Activation date[/b]'
+                    font_size: 18
+                    markup: True
+                TextInput:
+                    id: activation_date
+                    multiline: False
+
+            GridLayout:
+                cols: 2
+                size_hint_y: None
+                height: dp(32)
+
+                Label:
+                    text: '[b]Acquire date[/b]'
+                    font_size: 18
+                    markup: True
+                TextInput:
+                    id: acquire_date
+                    multiline: False
+
 
             Label:
                 text: '[b]Ports[/b]'
                 font_size: 18
                 markup: True
-            TextInput:
-                id: ports
-                multiline: False
+                size_hint_y: None
+                height: dp(32)
 
             Label:
                 text: '[b]Other[/b]'
                 font_size: 18
                 markup: True
-            TextInput:
-                id: other
-                multiline: False
+                size_hint_y: None
+                height: dp(32)
+
+            # PORTS
+            BoxLayout:
+                orientation: "vertical"
+                #size: root.width, root.height-3*dp(48)
+
+                GridLayout:
+                    size_hint: 1, None
+                    size_hint_y: None
+                    height: 25
+                    cols: 2
+
+                    Label:
+                        text: '[b]Port type[/b]'
+                        markup: True
+                    Label:
+                        text: '[b]Amount[/b]'
+                        markup: True
+
+                BoxLayout:
+                    RecycleView:
+                        viewclass: 'EditableTableCell'
+                        data: [{'text': str(x)} for x in root.loaded_ports]
+                        SelectableRecycleGridLayout:
+                            cols: 2
+                            default_size: None, dp(26)
+                            default_size_hint: 1, None
+                            size_hint_y: None
+                            height: self.minimum_height
+                            orientation: 'vertical'
+                            multiselect: True
+                            touch_multiselect: True
+
+            # PORTS
+            BoxLayout:
+                orientation: "vertical"
+                #size: root.width, root.height-3*dp(48)
+
+                GridLayout:
+                    size_hint: 1, None
+                    size_hint_y: None
+                    height: 25
+                    cols: 2
+
+                    Label:
+                        text: '[b]Key[/b]'
+                        markup: True
+                    Label:
+                        text: '[b]Value[/b]'
+                        markup: True
+
+                BoxLayout:
+                    RecycleView:
+                        viewclass: 'EditableTableCell'
+                        data: [{'text': str(x)} for x in root.loaded_other]
+                        SelectableRecycleGridLayout:
+                            cols: 2
+                            default_size: None, dp(26)
+                            default_size_hint: 1, None
+                            size_hint_y: None
+                            height: self.minimum_height
+                            orientation: 'vertical'
+                            multiselect: True
+                            touch_multiselect: True
 
         GridLayout:
             cols: 3

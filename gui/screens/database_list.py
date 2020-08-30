@@ -1,5 +1,5 @@
 from kivy.uix.screenmanager import Screen
-from kivy.properties import ObjectProperty
+
 from database.EntityDAO import DataDAO
 from gui.popup import information_poup
 from data.PassiveData import PassiveData
@@ -7,12 +7,51 @@ from PIL import Image
 from pyzbar.pyzbar import decode
 from VideoCapture import Device
 
+from kivy.uix.recycleview.views import RecycleDataViewBehavior
+from kivy.uix.label import Label
+from kivy.properties import BooleanProperty, ListProperty, StringProperty, ObjectProperty
+from kivy.uix.recyclegridlayout import RecycleGridLayout
+from kivy.uix.behaviors import FocusBehavior
+from kivy.uix.recycleview.layout import LayoutSelectionBehavior
+
+
+class SelectableRecycleGridLayout(FocusBehavior, LayoutSelectionBehavior,
+                                  RecycleGridLayout):
+    """ Adds selection and focus behaviour to the view. """
+    pass
+
+
+class TableCell(RecycleDataViewBehavior, Label):
+    """ Add selection support to the Button """
+    index = None
+    selected = BooleanProperty(False)
+    selectable = BooleanProperty(True)
+
+    def refresh_view_attrs(self, rv, index, data):
+        """ Catch and handle the view changes """
+        self.index = index
+        return super(TableCell, self).refresh_view_attrs(rv, index, data)
+
+    def update_changes(self, txt):
+        self.text = txt
 
 
 class DatabaseList(Screen):
+    loaded_db = ListProperty([])
+
     db_preview = ObjectProperty(None)
     id_input = ObjectProperty(None)
     name_input = ObjectProperty(None)
+
+    def __init__(self, **kwargs):
+        super().__init__(**kwargs)
+        self.get_data()
+
+    def get_data(self):
+        self.loaded_db[:] = []
+        for it in DataDAO.get_all_data():
+            self.loaded_db.append('[b]{}[/b]'.format(str(it.id)))
+            self.loaded_db.append('[i]{}[/i]'.format(str(it.name)))
 
     def parse_passive_data_to_list(self):
         data_list = []
@@ -21,8 +60,12 @@ class DatabaseList(Screen):
         return "\n".join(data_list)
 
     def btn_read_barcode(self):
-        cam = Device()
-        cam.saveSnapshot('codebars/photo.png')
+        try:
+            cam = Device()
+            cam.saveSnapshot('codebars/photo.png')
+        except:
+            information_poup(msg='Failed to take a photo!')
+            return
         try:
             data_decoded = decode(Image.open('codebars/photo.png'))
             self.id_input.text = data_decoded[0][0]
@@ -62,4 +105,5 @@ class DatabaseList(Screen):
             self.manager.current = 'passive_data_inspector'
 
     def on_enter(self, *args):
-        self.db_preview.text = self.parse_passive_data_to_list()
+        # self.db_preview.text = self.parse_passive_data_to_list()
+        self.get_data()
