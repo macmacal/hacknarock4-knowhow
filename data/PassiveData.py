@@ -14,3 +14,4 @@ class PassiveData:
         self.ports = {}
         self.other = {}
         self.tutorials = []
+        self.documents = []
