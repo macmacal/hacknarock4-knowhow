@@ -29,38 +29,91 @@ WindowManager:
                 app.root.current = 'database_list'
                 root.manager.transition.direction = 'left'
 
+# Widgets for tables
+<TextInputPopup>:
+    title: "Popup"
+    size_hint: None, None
+    size: 400, 400
+    auto_dismiss: False
+
+    BoxLayout:
+        orientation: "vertical"
+        TextInput:
+            id: txtinput
+            text: root.obj_text
+        Button:
+            size_hint: 1, 0.2
+            text: "Save Changes"
+            on_release:
+                root.obj.update_changes(txtinput.text)
+                root.dismiss()
+        Button:
+            size_hint: 1, 0.2
+            text: "Cancel Changes"
+            on_release: root.dismiss()
+
+
+<TableCell>:
+    # Draw a background to indicate selection
+    markup: True
+    canvas.before:
+        Color:
+            rgba: (.0, 0.9, .1, .3) if self.selected else (0, 0, 0, 1)
+        Rectangle:
+            pos: self.pos
+            size: self.size
+
+
+
+
 <DatabaseList>:
     name: 'database_list'
     name_input: name_input
-
-    db_preview: db_preview
     id_input: id_input
 
     GridLayout:
         cols: 1
 
         Label:
-            text: 'Database of all items\n ID - NAME'
+            text: 'Database of all items'
             font_size: 24
             valign: 'top'
             halign: 'center'
             size_hint_y: None
-            height: dp(96)
-            text_size: root.width, dp(96)
+            height: dp(48)
+            text_size: root.width, dp(48)
 
 
-        Label:
-            id: db_preview
-            text: 'No database!'
-            font_size: 18
-            text_size: root.width, root.height-3*dp(48)-dp(96)
-            size: self.texture_size
-            valign: 'top'
-            halign: 'center'
-            markup: True
-            on_ref_press:
-                import webbrowser
-                webbrowser.open(args[1])
+        BoxLayout:
+            orientation: "vertical"
+            size: root.width, root.height-3*dp(48)
+
+            GridLayout:
+                size_hint: 1, None
+                size_hint_y: None
+                height: 25
+                cols: 2
+
+                Label:
+                    text: '[b]ID[/b]'
+                    markup: True
+                Label:
+                    text: '[b]Item name[/b]'
+                    markup: True
+
+            BoxLayout:
+                RecycleView:
+                    viewclass: 'TableCell'
+                    data: [{'text': str(x)} for x in root.loaded_db]
+                    SelectableRecycleGridLayout:
+                        cols: 2
+                        default_size: None, dp(26)
+                        default_size_hint: 1, None
+                        size_hint_y: None
+                        height: self.minimum_height
+                        orientation: 'vertical'
+                        multiselect: True
+                        touch_multiselect: True
 
 
         GridLayout:
