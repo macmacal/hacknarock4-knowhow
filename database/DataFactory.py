@@ -19,7 +19,7 @@ def get_data():
     pd3.other['temperature'] = 'too damn hot'
 
     pd4 = PassiveData(4, 'printer')
-    pd4.tutorials.append(ActiveData('Drukarka nie dziaa', 'kup nowom'))
+    pd4.tutorials.append(ActiveData('Drukarka nie dziaa', 'kup nowom [ref=https://www.youtube.com/watch?v=dQw4w9WgXcQ][/ref]'))
     pd4.tutorials.append(ActiveData('Toner sie skońyu', 'użyj soku porzeczkowego'))
     pd4.other['ink'] = 'only red ink'
 
