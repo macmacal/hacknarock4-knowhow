@@ -30,7 +30,7 @@ class RelatedDocumentInspector(Screen):
         webbrowser.open('file://{}/{}'.format(os.getcwd(), self.related_doc.link))
 
     def btn_save(self):
-        self.related_doc.link = DocumentDAO.save_document(self.selected_item, self.doc_path.text)
+        self.related_doc.link = DocumentDAO.save_document(self.selected_item, self.doc_path.text, self.doc_name.text)
         passive_data = DataDAO.get_data_by_id(self.selected_item)
         index = 0
         if len(passive_data.documents):

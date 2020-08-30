@@ -19,8 +19,8 @@ class DocumentDAO:
         if len(paths) == 1:
             remove(paths[0])
 
-    def save_document(self, id, path):
-        return copy_pdf(path, id)
+    def save_document(self, id, path, name):
+        return copy_pdf(path, id, name)
 
 
 DocumentDAO = DocumentDAO(constants.DOCUMENTS_PATH)
