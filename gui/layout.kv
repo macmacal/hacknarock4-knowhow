@@ -200,8 +200,8 @@ WindowManager:
     serial_number: serial_number
     activation_date: activation_date
     acquire_date: acquire_date
-    ports: ports
-    other: other
+    #ports: ports
+    #other: other
 
     tutorials: tutorials
     documents: documents
@@ -320,14 +320,69 @@ WindowManager:
                 size_hint_y: None
                 height: dp(32)
 
+            # PORTS
+            BoxLayout:
+                orientation: "vertical"
+                #size: root.width, root.height-3*dp(48)
 
-            TextInput:
-                id: ports
-                multiline: False
+                GridLayout:
+                    size_hint: 1, None
+                    size_hint_y: None
+                    height: 25
+                    cols: 2
 
-            TextInput:
-                id: other
-                multiline: False
+                    Label:
+                        text: '[b]Port type[/b]'
+                        markup: True
+                    Label:
+                        text: '[b]Amount[/b]'
+                        markup: True
+
+                BoxLayout:
+                    RecycleView:
+                        viewclass: 'TableCell'
+                        data: [{'text': str(x)} for x in root.loaded_ports]
+                        SelectableRecycleGridLayout:
+                            cols: 2
+                            default_size: None, dp(26)
+                            default_size_hint: 1, None
+                            size_hint_y: None
+                            height: self.minimum_height
+                            orientation: 'vertical'
+                            multiselect: True
+                            touch_multiselect: True
+
+            # PORTS
+            BoxLayout:
+                orientation: "vertical"
+                #size: root.width, root.height-3*dp(48)
+
+                GridLayout:
+                    size_hint: 1, None
+                    size_hint_y: None
+                    height: 25
+                    cols: 2
+
+                    Label:
+                        text: '[b]Key[/b]'
+                        markup: True
+                    Label:
+                        text: '[b]Value[/b]'
+                        markup: True
+
+                BoxLayout:
+                    RecycleView:
+                        viewclass: 'TableCell'
+                        data: [{'text': str(x)} for x in root.loaded_other]
+                        SelectableRecycleGridLayout:
+                            cols: 2
+                            default_size: None, dp(26)
+                            default_size_hint: 1, None
+                            size_hint_y: None
+                            height: self.minimum_height
+                            orientation: 'vertical'
+                            multiselect: True
+                            touch_multiselect: True
 
         GridLayout:
             cols: 3

@@ -7,24 +7,12 @@ from PIL import Image
 from pyzbar.pyzbar import decode
 from VideoCapture import Device
 
-from kivy.uix.boxlayout import BoxLayout
 from kivy.uix.recycleview.views import RecycleDataViewBehavior
 from kivy.uix.label import Label
 from kivy.properties import BooleanProperty, ListProperty, StringProperty, ObjectProperty
 from kivy.uix.recyclegridlayout import RecycleGridLayout
 from kivy.uix.behaviors import FocusBehavior
 from kivy.uix.recycleview.layout import LayoutSelectionBehavior
-from kivy.uix.popup import Popup
-
-
-class TextInputPopup(Popup):
-    obj = ObjectProperty(None)
-    obj_text = StringProperty("")
-
-    def __init__(self, obj, **kwargs):
-        super(TextInputPopup, self).__init__(**kwargs)
-        self.obj = obj
-        self.obj_text = obj.text
 
 
 class SelectableRecycleGridLayout(FocusBehavior, LayoutSelectionBehavior,

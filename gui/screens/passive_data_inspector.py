@@ -1,5 +1,4 @@
 from kivy.uix.screenmanager import Screen
-from kivy.properties import ObjectProperty
 from data.PassiveData import PassiveData
 from data.ActiveData import ActiveData
 from data.PDFData import PDFData
@@ -9,6 +8,26 @@ from gui.popup import information_poup
 from gui.popup import confirmation_poup
 from datetime import datetime
 from ast import literal_eval
+
+from kivy.uix.recycleview.views import RecycleDataViewBehavior
+from kivy.uix.label import Label
+from kivy.properties import BooleanProperty, ListProperty, StringProperty, ObjectProperty
+from kivy.uix.recyclegridlayout import RecycleGridLayout
+from kivy.uix.behaviors import FocusBehavior
+from kivy.uix.recycleview.layout import LayoutSelectionBehavior
+from kivy.uix.popup import Popup
+
+from gui.screens.database_list import TableCell, SelectableRecycleGridLayout
+
+
+class TextInputPopup(Popup):
+    obj = ObjectProperty(None)
+    obj_text = StringProperty("")
+
+    def __init__(self, obj, **kwargs):
+        super(TextInputPopup, self).__init__(**kwargs)
+        self.obj = obj
+        self.obj_text = obj.text
 
 
 class PassiveDataInspector(Screen):
@@ -20,10 +39,13 @@ class PassiveDataInspector(Screen):
     serial_number = ObjectProperty(None)
     activation_date = ObjectProperty(None)
     acquire_date = ObjectProperty(None)
-    ports = ObjectProperty(None)
-    other = ObjectProperty(None)
+    # ports = ObjectProperty(None)
+    # other = ObjectProperty(None)
     tutorials = ObjectProperty(None)
     documents = ObjectProperty(None)
+
+    loaded_ports = ListProperty([])
+    loaded_other = ListProperty([])
 
     def on_enter(self, *args):
         self.passive_data = DataDAO.get_data_by_id(int(self.item_id.text))
@@ -85,8 +107,9 @@ class PassiveDataInspector(Screen):
         self.passive_data.serial_number = self.serial_number.text
         self.passive_data.activation_date = datetime.strptime(self.activation_date.text, '%d/%m/%y %H:%M:%S')
         self.passive_data.acquire_date = datetime.strptime(self.acquire_date.text, '%d/%m/%y %H:%M:%S')
-        self.passive_data.ports = literal_eval(self.ports.text)
-        self.passive_data.other = literal_eval(self.other.text)
+        # TODO: Edit und save
+        #self.passive_data.ports = literal_eval(self.ports.text)
+        #self.passive_data.other = literal_eval(self.other.text)
 
     def show_passive_data(self):
         self.item_id.text = str(self.passive_data.id)
@@ -96,8 +119,22 @@ class PassiveDataInspector(Screen):
         self.serial_number.text = str(self.passive_data.serial_number)
         self.activation_date.text = self.passive_data.activation_date.strftime('%d/%m/%y %H:%M:%S')
         self.acquire_date.text = self.passive_data.acquire_date.strftime('%d/%m/%y %H:%M:%S')
-        self.ports.text = str(self.passive_data.ports)
-        self.other.text = str(self.passive_data.other)
+        self.show_ports()
+        self.show_other()
+        # self.ports.text = str(self.passive_data.ports)
+        # self.other.text = str(self.passive_data.other)
+
+    def show_ports(self):
+        self.loaded_ports[:] = []
+        for (x, y) in self.passive_data.ports.items():
+            self.loaded_ports.append('[b]{}[/b]'.format(str(x)))
+            self.loaded_ports.append('[i]{}[/i]'.format(str(y)))
+
+    def show_other(self):
+        self.loaded_other[:] = []
+        for (x, y) in self.passive_data.other.items():
+            self.loaded_other.append('[b]{}[/b]'.format(str(x)))
+            self.loaded_other.append('[i]{}[/i]'.format(str(y)))
 
     def show_active_data(self):
         tuts_list = []
