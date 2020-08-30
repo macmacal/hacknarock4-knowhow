@@ -27,5 +27,5 @@ def get_data():
 
 
 def get_data_from_database():
-    pdd = EntityDAO(constants.DATABASE_PATH)
+    pdd = EntityDAO(constants.DATABASE_PATH, constants.DOCUMENTS_PATH)
     return pdd.get_all_data()
