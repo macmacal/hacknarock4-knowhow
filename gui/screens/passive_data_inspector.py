@@ -27,6 +27,12 @@ class PassiveDataInspector(Screen):
         self.show_passive_data()
         self.show_active_data()
 
+
+    def enter_tutorial(self, tutorial=''):
+        self.manager.get_screen('active_data_inspector').text_title.text = tutorial
+        self.manager.current = 'active_data_inspector'
+        pass
+
     def btn_new_tutorial(self):
         for i in self.passive_data.tutorials:
             if i.name == "New tutorial":
@@ -38,9 +44,22 @@ class PassiveDataInspector(Screen):
         self.manager.get_screen('active_data_inspector').text_title.text = 'New tutorial'
         self.manager.current = 'active_data_inspector'
 
-    def enter_tutorial(self, tutorial=''):
-        self.manager.get_screen('active_data_inspector').text_title.text = tutorial
-        self.manager.current = 'active_data_inspector'
+
+    def enter_document(self, doc_name=''): #TODO fix
+        self.manager.get_screen('related_document_inspector').text_title.text = doc_name
+        self.manager.current = 'related_document_inspector'
+        pass
+
+    def btn_new_document(self):
+        for i in self.passive_data.pdflist: #TODO fix
+            if i.name == "New document":
+                information_poup(msg='Can not create a new document link:\n A new document link already exists!')
+                return
+        self.passive_data.pdflist.append(ActiveData(name='New document', path='GenericPath')) #TODO:fix
+        self.parse_to_passive_data()
+        DataDAO.save_or_update_data(data=self.passive_data)
+        self.manager.get_screen('related_document_inspector').doc_name.text = 'New document'
+        self.manager.current = 'related_document_inspector'
         pass
 
     def btn_save(self):
@@ -84,5 +103,15 @@ class PassiveDataInspector(Screen):
 
         if len(tuts_list) == 0:
             self.tutorials.text = '[b]There are no tutorials for this item.[/b]'
+        else:
+            self.tutorials.text = '\n'.join(tuts_list)
+
+    def show_related_documents(self): #TODO fix
+        tuts_list = []
+        for i in self.passive_data.pdflist:
+            tuts_list.append(' > [ref={}][b][u]{}[/u][/b][/ref]'.format(i.name, i.name))
+
+        if len(tuts_list) == 0:
+            self.tutorials.text = '[b]There are no related documents for this item.[/b]'
         else:
             self.tutorials.text = '\n'.join(tuts_list)
