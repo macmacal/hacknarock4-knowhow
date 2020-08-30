@@ -2,6 +2,7 @@ from kivy.uix.screenmanager import Screen
 from kivy.properties import ObjectProperty
 from data.PassiveData import PassiveData
 from data.ActiveData import ActiveData
+from data.PDFData import PDFData
 from database.EntityDAO import DataDAO
 from gui.popup import information_poup
 from gui.popup import confirmation_poup
@@ -21,12 +22,13 @@ class PassiveDataInspector(Screen):
     ports = ObjectProperty(None)
     other = ObjectProperty(None)
     tutorials = ObjectProperty(None)
+    documents = ObjectProperty(None)
 
     def on_enter(self, *args):
         self.passive_data = DataDAO.get_data_by_id(int(self.item_id.text))
         self.show_passive_data()
         self.show_active_data()
-
+        self.show_related_documents()
 
     def enter_tutorial(self, tutorial=''):
         self.manager.get_screen('active_data_inspector').text_title.text = tutorial
@@ -44,18 +46,17 @@ class PassiveDataInspector(Screen):
         self.manager.get_screen('active_data_inspector').text_title.text = 'New tutorial'
         self.manager.current = 'active_data_inspector'
 
-
-    def enter_document(self, doc_name=''): #TODO fix
-        self.manager.get_screen('related_document_inspector').text_title.text = doc_name
+    def enter_document(self, doc_name=''):
+        self.manager.get_screen('related_document_inspector').doc_name.text = doc_name
         self.manager.current = 'related_document_inspector'
         pass
 
     def btn_new_document(self):
-        for i in self.passive_data.pdflist: #TODO fix
+        for i in self.passive_data.documents:
             if i.name == "New document":
                 information_poup(msg='Can not create a new document link:\n A new document link already exists!')
                 return
-        self.passive_data.pdflist.append(ActiveData(name='New document', path='GenericPath')) #TODO:fix
+        self.passive_data.documents.append(PDFData(name='New document', link='GenericPath'))
         self.parse_to_passive_data()
         DataDAO.save_or_update_data(data=self.passive_data)
         self.manager.get_screen('related_document_inspector').doc_name.text = 'New document'
@@ -106,12 +107,12 @@ class PassiveDataInspector(Screen):
         else:
             self.tutorials.text = '\n'.join(tuts_list)
 
-    def show_related_documents(self): #TODO fix
-        tuts_list = []
-        for i in self.passive_data.pdflist:
-            tuts_list.append(' > [ref={}][b][u]{}[/u][/b][/ref]'.format(i.name, i.name))
+    def show_related_documents(self):
+        docs_list = []
+        for i in self.passive_data.documents:
+            docs_list.append(' > [ref={}][b][u]{}[/u][/b][/ref]'.format(i.name, i.name))
 
-        if len(tuts_list) == 0:
-            self.tutorials.text = '[b]There are no related documents for this item.[/b]'
+        if len(docs_list) == 0:
+            self.documents.text = '[b]There are no related documents for this item.[/b]'
         else:
-            self.tutorials.text = '\n'.join(tuts_list)
+            self.documents.text = '\n'.join(docs_list)
