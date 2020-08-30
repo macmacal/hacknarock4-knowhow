@@ -37,7 +37,7 @@ class ActiveDataInspector(Screen):
 
         for i in passive_data.tutorials:
             if i.name == self.active_data.name:
-               index = passive_data.tutorials.index(i)
+                index = passive_data.tutorials.index(i)
         passive_data.tutorials.pop(index)
         self.active_data.name = self.text_title.text
         self.active_data.tutorial = self.text_input.text
@@ -58,5 +58,3 @@ class ActiveDataInspector(Screen):
         passive_data.tutorials.pop(index)
         DataDAO.save_or_update_data(passive_data)
         self.manager.current = 'passive_data_inspector'
-
-

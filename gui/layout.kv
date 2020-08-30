@@ -1,33 +1,119 @@
 #: kivy 1.10.0
-#: import TreeViewLabel kivy.uix.treeview.TreeViewLabel
 
 WindowManager:
     MainWindow:
     DatabaseList:
     PassiveDataInspector:
     ActiveDataInspector:
+    RelatedDocumentInspector:
+
 
 <MainWindow>:
-    name: "main_window"
+    name: 'main_window'
 
     GridLayout:
         cols: 1
 
         Label:
-            text: "NOŁ-AŁ - RTV & domestic electronics knowledge storage"
+            text: '[b]NOŁ-AŁ[/b]\n [b]RTV & domestic electronics knowledge storage[/b]'
+            haligned: 'center'
+            font_size: 24
+            markup: True
+
+        Button:
+            text: 'Database list'
+            font_size: 24
+            size_hint_y: None
+            height: dp(96)
+            on_release:
+                app.root.current = 'database_list'
+                root.manager.transition.direction = 'left'
+
+<RelatedDocumentInspector>:
+    name: 'related_document_inspector'
+
+    doc_name: doc_name
+    doc_path: doc_path
+
+    GridLayout:
+        cols: 1
+
+        Label:
+            text: '[b]Releated document[/b]'
+            font_size: 24
+            markup: True
 
         GridLayout:
-            rows: 2
+            cols: 2
+            size_hint_y: None
+            height: dp(96)
+
+            Label:
+                text: '[b]Name: [/b]'
+                font_size: 18
+                markup: True
+            TextInput:
+                id: doc_name
+                text: 'GenericDocName'
+                font_size: 18
+                multiline: False
+                size_hint_y: None
+                height: dp(48)
+
+            Label:
+                text: '[b]Link path: [/b]'
+                font_size: 18
+                markup: True
+            TextInput:
+                id: doc_path
+                text: 'GenericDocPath'
+                font_size: 18
+                multiline: False
+                size_hint_y: None
+                height: dp(48)
+
+        GridLayout:
+            cols: 4
+            size_hint_y: None
+            height: dp(48)
 
             Button:
-                text: "Database list"
+                text: 'Return'
                 font_size: 24
+                size_hint_y: None
+                height: dp(48)
                 on_release:
-                    app.root.current = "database_list"
-                    root.manager.transition.direction = "left"
+                    app.root.current = 'passive_data_inspector'
+                    root.manager.transition.direction = 'down'
+
+            Button:
+                text: 'Delete'
+                font_size: 24
+                size_hint_y: None
+                height: dp(48)
+                on_release:
+                    root.btn_delete()
+                    root.manager.transition.direction = 'down'
+
+            Button:
+                text: 'Save'
+                font_size: 24
+                size_hint_y: None
+                height: dp(48)
+                on_release:
+                    root.btn_save()
+
+            Button:
+                text: 'Open'
+                font_size: 24
+                size_hint_y: None
+                height: dp(48)
+                on_release:
+                    root.btn_pdf_open()
+
 
 <DatabaseList>:
-    name: "database_list"
+    name: 'database_list'
     name_input: name_input
 
     db_preview: db_preview
@@ -37,7 +123,7 @@ WindowManager:
         cols: 1
 
         Label:
-            text: "Database of all items\n ID - NAME"
+            text: 'Database of all items\n ID - NAME'
             font_size: 24
             valign: 'top'
             halign: 'center'
@@ -48,7 +134,7 @@ WindowManager:
 
         Label:
             id: db_preview
-            text: "No database!"
+            text: 'No database!'
             font_size: 18
             text_size: root.width, root.height-3*dp(48)-dp(96)
             size: self.texture_size
@@ -66,21 +152,21 @@ WindowManager:
             height: dp(96)
 
             Label:
-                text: "Type ID to proceed: "
+                text: 'Type ID to proceed: '
                 size_hint_y: None
                 font_size: 24
                 size_hint_y: None
                 height: dp(48)
             TextInput:
                 id: id_input
-                text: "1"
+                text: '1'
                 font_size: 32
                 multiline: False
                 size_hint_y: None
                 height: dp(48)
 
             Label:
-                text: "Type name to proceed: "
+                text: 'Type name to proceed: '
                 size_hint_y: None
                 font_size: 24
                 size_hint_y: None
@@ -101,34 +187,34 @@ WindowManager:
             height: dp(48)
 
             Button:
-                text: "Back to main screen"
+                text: 'Back to main screen'
                 font_size: 24
                 size_hint_y: None
                 height: dp(48)
                 on_release:
-                    app.root.current = "main_window"
-                    root.manager.transition.direction = "right"
+                    app.root.current = 'main_window'
+                    root.manager.transition.direction = 'right'
 
             Button:
-                text: "Create new"
+                text: 'Create new'
                 font_size: 24
                 size_hint_y: None
                 height: dp(48)
                 on_release:
                     root.btn_create_new()
-                    root.manager.transition.direction = "left"
+                    root.manager.transition.direction = 'left'
 
             Button:
-                text: "Data inspector"
+                text: 'Data inspector'
                 font_size: 24
                 size_hint_y: None
                 height: dp(48)
                 on_release:
                     root.btn_inspect()
-                    root.manager.transition.direction = "left"
+                    root.manager.transition.direction = 'left'
 
 <PassiveDataInspector>:
-    name: "passive_data_inspector"
+    name: 'passive_data_inspector'
 
 
     item_id: item_id
@@ -142,6 +228,7 @@ WindowManager:
     other: other
 
     tutorials: tutorials
+    documents: documents
 
     GridLayout:
         cols: 1
@@ -150,88 +237,109 @@ WindowManager:
             cols: 2
 
             Label:
-                text: "[b]ID[/b]"
+                text: '[b]ID[/b]'
+                font_size: 18
                 markup: True
             Label:
                 id: item_id
+                font_size: 18
                 multiline: False
 
 
             Label:
-                text: "Name"
+                text: '[b]Name[/b]'
+                font_size: 18
+                markup: True
             TextInput:
                 id: namee
                 multiline: False
 
             Label:
-                text: "Producer"
+                text: '[b]Producer[/b]'
+                font_size: 18
+                markup: True
             TextInput:
                 id: producer
                 multiline: False
 
             Label:
-                text: "Model"
+                text: '[b]Model[/b]'
+                font_size: 18
+                markup: True
             TextInput:
                 id: model
                 multiline: False
 
             Label:
-                text: "Serial number"
+                text: '[b]Serial number[/b]'
+                font_size: 18
+                markup: True
             TextInput:
                 id: serial_number
                 multiline: False
 
             Label:
-                text: "Activation date"
+                text: '[b]Activation date[/b]'
+                font_size: 18
+                markup: True
             TextInput:
                 id: activation_date
                 multiline: False
 
             Label:
-                text: "Acquire date"
+                text: '[b]Acquire date[/b]'
+                font_size: 18
+                markup: True
             TextInput:
                 id: acquire_date
                 multiline: False
 
             Label:
-                text: "Ports"
+                text: '[b]Ports[/b]'
+                font_size: 18
+                markup: True
             TextInput:
                 id: ports
                 multiline: False
 
             Label:
-                text: "Other"
+                text: '[b]Other[/b]'
+                font_size: 18
+                markup: True
             TextInput:
                 id: other
                 multiline: False
 
         GridLayout:
-            cols: 2
+            cols: 3
             GridLayout:
                 cols: 1
 
                 Button:
-                    text: "Save"
+                    text: 'Save'
+                    font_size: 24
                     on_release:
                         root.btn_save()
 
                 Button:
-                    text: "Delete"
+                    text: 'Delete'
+                    font_size: 24
                     on_release:
                         root.btn_delete()
-                        root.manager.transition.direction = "right"
+                        root.manager.transition.direction = 'right'
 
                 Button:
-                    text: "Back"
+                    text: 'Back'
+                    font_size: 24
                     on_release:
-                        app.root.current = "database_list"
-                        root.manager.transition.direction = "right"
+                        app.root.current = 'database_list'
+                        root.manager.transition.direction = 'right'
 
             GridLayout:
                 cols: 1
 
                 Label:
-                    text: "Available tutorials"
+                    text: 'Tutorials'
                     font_size: 24
                     valign: 'top'
                     halign: 'center'
@@ -241,29 +349,61 @@ WindowManager:
 
                 Label:
                     id: tutorials
-                    text: '[b]There are no tutorials for this item.[/b]\b [ref="TEST"]Linkacz[/ref]'
-                    text_size: root.width/2, root.height/2-2*dp(48)
+                    text: '[b]There are no tutorials for this item.[/b]'
+                    text_size: root.width/3, root.height/2-2*dp(48)
                     size: self.texture_size
                     valign: 'top'
                     halign: 'left'
                     markup: True
                     on_ref_press:
                         root.enter_tutorial(args[1])
-                        root.manager.transition.direction = "up"
+                        root.manager.transition.direction = 'up'
 
                 Button:
-                    text: "Add new"
+                    text: 'Add new'
                     font_size: 24
                     height: dp(48)
                     size_hint_y: None
                     on_release:
                         root.btn_new_tutorial()
 
+            GridLayout:
+                cols: 1
+
+                Label:
+                    text: 'Related documents'
+                    font_size: 24
+                    valign: 'top'
+                    halign: 'center'
+                    size_hint_y: None
+                    height: dp(48)
+                    text_size: root.width, dp(48)
+
+                Label:
+                    id: documents
+                    text: '[b]There are no related documents for this item.[/b]'
+                    text_size: root.width/3, root.height/2-2*dp(48)
+                    size: self.texture_size
+                    valign: 'top'
+                    halign: 'left'
+                    markup: True
+                    on_ref_press:
+                        root.enter_document(args[1])
+                        root.manager.transition.direction = 'down'
+
+                Button:
+                    text: 'Add new'
+                    font_size: 24
+                    height: dp(48)
+                    size_hint_y: None
+                    on_release:
+                        root.btn_new_document()
+
 
 
 
 <ActiveDataInspector>:
-    name: "active_data_inspector"
+    name: 'active_data_inspector'
 
     text_title: text_title
     text_input: text_input
@@ -291,7 +431,7 @@ WindowManager:
                     id: text_title
                     size_hint_y: None
                     height: dp(32)
-                    text: "Name of the article."
+                    text: 'Name of the article.'
                     markup: True
 
 
@@ -306,11 +446,11 @@ WindowManager:
             Label:
                 size_hint_y: None
                 height: dp(32)
-                text: "[b]Preview: [/b]"
+                text: '[b]Preview: [/b]'
                 markup: True
             Label:
                 id: text_preview
-                text: "[b]TEST[/b]"
+                text: '[b]TEST[/b]'
                 text_size: root.width/2, root.height-2*dp(48)-dp(32)
                 size: self.texture_size
                 valign: 'top'
@@ -322,33 +462,33 @@ WindowManager:
 
 
         Button:
-            text: "Preview"
+            text: 'Preview'
             font_size: 32
             size_hint_y: None
             height: dp(48)
             on_press: root.btn_preview()
 
         Button:
-            text: "Save"
+            text: 'Save'
             font_size: 32
             size_hint_y: None
             height: dp(48)
             on_press: root.btn_save()
 
         Button:
-            text: "Return"
+            text: 'Return'
             font_size: 32
             size_hint_y: None
             height: dp(48)
             on_press:
-                app.root.current = "passive_data_inspector"
-                root.manager.transition.direction = "down"
+                app.root.current = 'passive_data_inspector'
+                root.manager.transition.direction = 'down'
 
         Button:
-            text: "Delete"
+            text: 'Delete'
             font_size: 32
             size_hint_y: None
             height: dp(48)
             on_press:
                 root.btn_delete()
-                root.manager.transition.direction = "down"
+                root.manager.transition.direction = 'down'

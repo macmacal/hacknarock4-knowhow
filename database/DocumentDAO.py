@@ -15,7 +15,7 @@ class DocumentDAO:
             remove(paths[0])
 
     def save_document(self, id, path):
-        copy_pdf(path, id)
+        return copy_pdf(path, id)
 
 
 DocumentDAO = DocumentDAO(constants.DOCUMENTS_PATH)
