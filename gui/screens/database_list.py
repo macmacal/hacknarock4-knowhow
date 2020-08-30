@@ -5,8 +5,8 @@ from gui.popup import information_poup
 from data.PassiveData import PassiveData
 from PIL import Image
 from pyzbar.pyzbar import decode
-import pygame
-import pygame.camera
+from VideoCapture import Device
+
 
 
 class DatabaseList(Screen):
@@ -21,15 +21,8 @@ class DatabaseList(Screen):
         return "\n".join(data_list)
 
     def btn_read_barcode(self):
-        try:
-            pygame.camera.init()
-            cam = pygame.camera.Camera(0, (640, 480))
-            cam.start()
-            img = cam.get_image()
-            pygame.image.save(img, 'codebars/photo.png')
-        except:
-            information_poup(msg='Failed to capture a photo!')
-            return
+        cam = Device()
+        cam.saveSnapshot('codebars/photo.png')
         try:
             data_decoded = decode(Image.open('codebars/photo.png'))
             self.id_input.text = data_decoded[0][0]
