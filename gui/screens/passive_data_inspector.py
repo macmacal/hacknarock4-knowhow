@@ -3,6 +3,7 @@ from kivy.properties import ObjectProperty
 from data.PassiveData import PassiveData
 from data.ActiveData import ActiveData
 from data.PDFData import PDFData
+from database.DocumentDAO import DocumentDAO
 from database.EntityDAO import DataDAO
 from gui.popup import information_poup
 from gui.popup import confirmation_poup
@@ -73,6 +74,7 @@ class PassiveDataInspector(Screen):
 
     def delete_passive_data(self, instance):
         DataDAO.remove_data_by_id(self.passive_data.id)
+        DocumentDAO.remove_all_documents_from_id(self.passive_data.id)
         self.manager.current = 'database_list'
 
     def parse_to_passive_data(self):
