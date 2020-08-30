@@ -64,8 +64,6 @@ WindowManager:
             size: self.size
 
 
-
-
 <DatabaseList>:
     name: 'database_list'
     name_input: name_input
@@ -218,72 +216,115 @@ WindowManager:
                 text: '[b]ID[/b]'
                 font_size: 18
                 markup: True
+                size_hint_y: None
+                height: dp(32)
             Label:
                 id: item_id
                 font_size: 18
                 multiline: False
+                size_hint_y: None
+                height: dp(32)
 
 
-            Label:
-                text: '[b]Name[/b]'
-                font_size: 18
-                markup: True
-            TextInput:
-                id: namee
-                multiline: False
+            GridLayout:
+                cols: 2
+                size_hint_y: None
+                height: dp(32)
 
-            Label:
-                text: '[b]Producer[/b]'
-                font_size: 18
-                markup: True
-            TextInput:
-                id: producer
-                multiline: False
+                Label:
+                    text: '[b]Name[/b]'
+                    font_size: 18
+                    markup: True
+                TextInput:
+                    id: namee
+                    multiline: False
 
-            Label:
-                text: '[b]Model[/b]'
-                font_size: 18
-                markup: True
-            TextInput:
-                id: model
-                multiline: False
+            GridLayout:
+                cols: 2
+                size_hint_y: None
+                height: dp(32)
 
-            Label:
-                text: '[b]Serial number[/b]'
-                font_size: 18
-                markup: True
-            TextInput:
-                id: serial_number
-                multiline: False
+                Label:
+                    text: '[b]Producer[/b]'
+                    font_size: 18
+                    markup: True
+                TextInput:
+                    id: producer
+                    multiline: False
 
-            Label:
-                text: '[b]Activation date[/b]'
-                font_size: 18
-                markup: True
-            TextInput:
-                id: activation_date
-                multiline: False
+            GridLayout:
+                cols: 2
+                size_hint_y: None
+                height: dp(32)
 
-            Label:
-                text: '[b]Acquire date[/b]'
-                font_size: 18
-                markup: True
-            TextInput:
-                id: acquire_date
-                multiline: False
+                Label:
+                    text: '[b]Model[/b]'
+                    font_size: 18
+                    markup: True
+                TextInput:
+                    id: model
+                    multiline: False
+
+
+            GridLayout:
+                cols: 2
+                size_hint_y: None
+                height: dp(32)
+
+                Label:
+                    text: '[b]Serial number[/b]'
+                    font_size: 18
+                    markup: True
+                TextInput:
+                    id: serial_number
+                    multiline: False
+
+            GridLayout:
+                cols: 2
+                size_hint_y: None
+                height: dp(32)
+
+                Label:
+                    text: '[b]Activation date[/b]'
+                    font_size: 18
+                    markup: True
+                TextInput:
+                    id: activation_date
+                    multiline: False
+
+            GridLayout:
+                cols: 2
+                size_hint_y: None
+                height: dp(32)
+
+                Label:
+                    text: '[b]Acquire date[/b]'
+                    font_size: 18
+                    markup: True
+                TextInput:
+                    id: acquire_date
+                    multiline: False
+
 
             Label:
                 text: '[b]Ports[/b]'
                 font_size: 18
                 markup: True
-            TextInput:
-                id: ports
-                multiline: False
+                size_hint_y: None
+                height: dp(32)
 
             Label:
                 text: '[b]Other[/b]'
                 font_size: 18
                 markup: True
+                size_hint_y: None
+                height: dp(32)
+
+
+            TextInput:
+                id: ports
+                multiline: False
+
             TextInput:
                 id: other
                 multiline: False
