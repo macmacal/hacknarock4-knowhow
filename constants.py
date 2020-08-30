@@ -1,1 +1,2 @@
 DATABASE_PATH = 'files'
+DOCUMENTS_PATH = 'PDF'
