@@ -4,6 +4,7 @@ from data.ActiveData import ActiveData
 from database.EntityDAO import DataDAO
 from gui.popup import information_poup
 from gui.popup import confirmation_poup
+from utils.regex_utils import format_link, format_youtube_link
 
 
 class ActiveDataInspector(Screen):
@@ -27,8 +28,7 @@ class ActiveDataInspector(Screen):
         self.btn_preview()
 
     def btn_preview(self):
-        self.text_preview.text = self.text_input.text
-        # TODO: add parsing for [ref] markup formatting
+        self.text_preview.text = format_youtube_link(format_link(self.text_input.text))
 
     def btn_save(self):
         self.btn_preview()
