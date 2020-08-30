@@ -3,6 +3,10 @@ from kivy.properties import ObjectProperty
 from database.EntityDAO import DataDAO
 from gui.popup import information_poup
 from data.PassiveData import PassiveData
+from PIL import Image
+from pyzbar.pyzbar import decode
+from VideoCapture import Device
+
 
 
 class DatabaseList(Screen):
@@ -15,6 +19,15 @@ class DatabaseList(Screen):
         for it in DataDAO.get_all_data():
             data_list.append('{}  -  {}'.format(str(it.id), str(it.name)))
         return "\n".join(data_list)
+
+    def btn_read_barcode(self):
+        cam = Device()
+        cam.saveSnapshot('codebars/photo.png')
+        try:
+            data_decoded = decode(Image.open('codebars/photo.png'))
+            self.id_input.text = data_decoded[0][0]
+        except:
+            information_poup(msg='Failed to read barcode!')
 
     def btn_inspect(self):
         if self.id_input.text == '' and self.name_input.text == '':
