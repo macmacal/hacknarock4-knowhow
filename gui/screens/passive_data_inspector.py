@@ -11,6 +11,7 @@ from ast import literal_eval
 
 from kivy.uix.recycleview.views import RecycleDataViewBehavior
 from kivy.uix.label import Label
+from kivy.uix.textinput import TextInput
 from kivy.properties import BooleanProperty, ListProperty, StringProperty, ObjectProperty
 from kivy.uix.recyclegridlayout import RecycleGridLayout
 from kivy.uix.behaviors import FocusBehavior
@@ -28,6 +29,21 @@ class TextInputPopup(Popup):
         super(TextInputPopup, self).__init__(**kwargs)
         self.obj = obj
         self.obj_text = obj.text
+
+
+class EditableTableCell(RecycleDataViewBehavior, TextInput):
+    """ Add selection support to the Button """
+    index = None
+    selected = BooleanProperty(False)
+    selectable = BooleanProperty(True)
+
+    def refresh_view_attrs(self, rv, index, data):
+        """ Catch and handle the view changes """
+        self.index = index
+        return super(EditableTableCell, self).refresh_view_attrs(rv, index, data)
+
+    def update_changes(self, txt):
+        self.text = txt
 
 
 class PassiveDataInspector(Screen):
@@ -49,6 +65,9 @@ class PassiveDataInspector(Screen):
 
     def on_enter(self, *args):
         self.passive_data = DataDAO.get_data_by_id(int(self.item_id.text))
+        self.refresh()
+
+    def refresh(self):
         self.show_passive_data()
         self.show_active_data()
         self.show_related_documents()
@@ -90,6 +109,7 @@ class PassiveDataInspector(Screen):
         self.parse_to_passive_data()
         DataDAO.save_or_update_data(data=self.passive_data)
         information_poup(msg='The item has been saved!')
+        self.refresh()
 
     def btn_delete(self):
         confirmation_poup(msg="Are you sure?", yes_action=self.delete_passive_data)
@@ -107,9 +127,27 @@ class PassiveDataInspector(Screen):
         self.passive_data.serial_number = self.serial_number.text
         self.passive_data.activation_date = datetime.strptime(self.activation_date.text, '%d/%m/%y %H:%M:%S')
         self.passive_data.acquire_date = datetime.strptime(self.acquire_date.text, '%d/%m/%y %H:%M:%S')
+        self.parse_ports()
+        self.parse_other()
         # TODO: Edit und save
-        #self.passive_data.ports = literal_eval(self.ports.text)
-        #self.passive_data.other = literal_eval(self.other.text)
+        # self.passive_data.ports = literal_eval(self.ports.text)
+        # self.passive_data.other = literal_eval(self.other.text)
+
+    def parse_ports(self):
+        # TODO: there is no bind with UI !
+        ports_dict = {}
+        # print(self.loaded_ports)
+        for _ in range(1, int(len(self.loaded_ports) / 2 + 1)):
+            x = self.loaded_ports.pop()
+            y = self.loaded_ports.pop()
+            print({str(y): str(x)})
+            ports_dict.update({str(y): str(x)})
+        self.passive_data.ports.update(ports_dict)
+        pass
+
+    def parse_other(self):
+        # self.self.passive_data.other =
+        pass
 
     def show_passive_data(self):
         self.item_id.text = str(self.passive_data.id)
@@ -121,20 +159,18 @@ class PassiveDataInspector(Screen):
         self.acquire_date.text = self.passive_data.acquire_date.strftime('%d/%m/%y %H:%M:%S')
         self.show_ports()
         self.show_other()
-        # self.ports.text = str(self.passive_data.ports)
-        # self.other.text = str(self.passive_data.other)
 
     def show_ports(self):
         self.loaded_ports[:] = []
         for (x, y) in self.passive_data.ports.items():
-            self.loaded_ports.append('[b]{}[/b]'.format(str(x)))
-            self.loaded_ports.append('[i]{}[/i]'.format(str(y)))
+            self.loaded_ports.append(str(x))
+            self.loaded_ports.append(str(y))
 
     def show_other(self):
         self.loaded_other[:] = []
         for (x, y) in self.passive_data.other.items():
-            self.loaded_other.append('[b]{}[/b]'.format(str(x)))
-            self.loaded_other.append('[i]{}[/i]'.format(str(y)))
+            self.loaded_other.append(str(x))
+            self.loaded_other.append(str(y))
 
     def show_active_data(self):
         tuts_list = []
